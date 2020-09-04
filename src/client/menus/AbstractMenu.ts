@@ -1,5 +1,5 @@
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import MenuPool from "./MenuPool"
+import menuPool from "../modules/MenuPool"
 
 export default abstract class AbstractMenu {
     menuObject: NativeUI.Menu
@@ -9,7 +9,7 @@ export default abstract class AbstractMenu {
         this.menuObject.SetNoBannerType()
         this.menuObject.DisableInstructionalButtons(true)
         this.menuObject.ItemSelect.on((selectedItem: NativeUI.UIMenuItem) => { if (selectedItem.Data) selectedItem.Data() })
-        MenuPool.menus.push(this.menuObject)
+        menuPool.menus.push(this.menuObject)
     }
 
     addItem<T extends NativeUI.UIMenuItem>(item: T, handler: () => void) {

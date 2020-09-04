@@ -1,3 +1,5 @@
-import MenuPool from "./menus/MenuPool"
+import network from "./modules/Network"
+import menuPool from "./modules/MenuPool"
 
-new MenuPool()
+network.init()
+menuPool.init()

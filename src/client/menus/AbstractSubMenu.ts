@@ -7,6 +7,7 @@ export default abstract class AbstractSubMenu extends AbstractMenu {
 
     constructor(parentMenu: NativeUI.Menu, title: string) {
         super(title)
+        this.parentMenu = parentMenu
         this.menuItem = new NativeUI.UIMenuItem(title)
         this.menuItem.RightLabel = "→→→"
         this.parentMenu.AddItem(this.menuItem)
