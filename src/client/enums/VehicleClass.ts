@@ -20,7 +20,8 @@ enum VehicleClass {
     Emergency,
     Military,
     Commercial,
-    Trains
+    Trains,
+    OpenWheel
 }
 
 export default VehicleClass

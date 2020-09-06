@@ -8,68 +8,78 @@ import network from "../modules/Network"
 import Game from "../utils/Game"
 import VehicleSeat from "../enums/VehicleSeat"
 import VehicleClass from "../enums/VehicleClass"
+import Vehicle from "../utils/Vehicle"
+import AbstractMenu from "./AbstractMenu"
 
 export default class VehicleSpawnerMenu extends AbstractSubMenu {
-    vehicleMenus: VehicleClassMenu[]
+    private classMenus: ClassMenu[]
+    setIntoVehicle: NativeUI.UIMenuCheckboxItem
 
-    constructor(parentMenu: NativeUI.Menu, title: string) {
+    constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.vehicleMenus = [
-            new VehicleClassMenu(this.menuObject, "Compacts", VehicleClass.Compacts),
-            new VehicleClassMenu(this.menuObject, "Sedans", VehicleClass.Sedans),
-            new VehicleClassMenu(this.menuObject, "SUVs", VehicleClass.SUVs),
-            new VehicleClassMenu(this.menuObject, "Coupes", VehicleClass.Coupes),
-            new VehicleClassMenu(this.menuObject, "Muscle", VehicleClass.Muscle),
-            new VehicleClassMenu(this.menuObject, "Sports Classics", VehicleClass.SportsClassics),
-            new VehicleClassMenu(this.menuObject, "Sports", VehicleClass.Sports),
-            new VehicleClassMenu(this.menuObject, "Super", VehicleClass.Super),
-            new VehicleClassMenu(this.menuObject, "Motorcycles", VehicleClass.Motorcycles),
-            new VehicleClassMenu(this.menuObject, "Off Road", VehicleClass.OffRoad),
-            new VehicleClassMenu(this.menuObject, "Industrial", VehicleClass.Industrial),
-            new VehicleClassMenu(this.menuObject, "Utility", VehicleClass.Utility),
-            new VehicleClassMenu(this.menuObject, "Vans", VehicleClass.Vans),
-            new VehicleClassMenu(this.menuObject, "Cycles", VehicleClass.Cycles),
-            new VehicleClassMenu(this.menuObject, "Boats", VehicleClass.Boats),
-            new VehicleClassMenu(this.menuObject, "Helicopters", VehicleClass.Helicopters),
-            new VehicleClassMenu(this.menuObject, "Planes", VehicleClass.Planes),
-            new VehicleClassMenu(this.menuObject, "Service", VehicleClass.Service),
-            new VehicleClassMenu(this.menuObject, "Emergency", VehicleClass.Emergency),
-            new VehicleClassMenu(this.menuObject, "Military", VehicleClass.Military),
-            new VehicleClassMenu(this.menuObject, "Commercial", VehicleClass.Commercial),
-            new VehicleClassMenu(this.menuObject, "Trains", VehicleClass.Trains),
+        this.classMenus = [
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Compacts), VehicleClass.Compacts),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Sedans), VehicleClass.Sedans),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.SUVs), VehicleClass.SUVs),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Coupes), VehicleClass.Coupes),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Muscle), VehicleClass.Muscle),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.SportsClassics), VehicleClass.SportsClassics),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Sports), VehicleClass.Sports),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Super), VehicleClass.Super),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Motorcycles), VehicleClass.Motorcycles),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.OffRoad), VehicleClass.OffRoad),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Industrial), VehicleClass.Industrial),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Utility), VehicleClass.Utility),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Vans), VehicleClass.Vans),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Cycles), VehicleClass.Cycles),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Boats), VehicleClass.Boats),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Helicopters), VehicleClass.Helicopters),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Planes), VehicleClass.Planes),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Service), VehicleClass.Service),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Emergency), VehicleClass.Emergency),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Military), VehicleClass.Military),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Commercial), VehicleClass.Commercial),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Trains), VehicleClass.Trains),
+            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.OpenWheel), VehicleClass.OpenWheel),
         ]
-        this.addVehicles()
+        this.addClassMenus()
+        this.addItem(this.setIntoVehicle = new NativeUI.UIMenuCheckboxItem("Set As Driver", true))
+        this.setIntoVehicle.LeftBadge = NativeUI.BadgeStyle.Alert
     }
 
-    getMenuFromVehicleClass(vehicleClass: VehicleClass) {
-        return this.vehicleMenus.find(menu => menu.vehicleClass == vehicleClass)
+    private getMenuFromVehicleClass(vehicleClass: VehicleClass) {
+        return this.classMenus.find(menu => menu.vehicleClass == vehicleClass)
     }
 
-    addVehicles() {
+    private addClassMenus() {
         Enum.getValues(VehicleHashes).forEach(hash => {
-            this.getMenuFromVehicleClass(game.getVehicleClassFromName(+hash))?.addVehicle(+hash)
+            this.getMenuFromVehicleClass(game.getVehicleClassFromName(+hash)).addVehicle(+hash)
         })
+        this.classMenus.forEach(menu => Game.sortMenuItems(menu.menuObject))
     }
 }
 
-class VehicleClassMenu extends AbstractSubMenu {
+class ClassMenu extends AbstractSubMenu {
     vehicleClass: VehicleClass
 
-    constructor(parentMenu: NativeUI.Menu, title: string, vehicleClass: VehicleClass) {
+    constructor(parentMenu: AbstractMenu, title: string, vehicleClass: VehicleClass) {
         super(parentMenu, title)
         this.vehicleClass = vehicleClass
     }
 
     addVehicle(hash: number) {
-        this.addItem(new NativeUI.UIMenuItem(game.getLabelText(game.getDisplayNameFromVehicleModel(hash))), async () => {
-            await network.callback("destroyVehicle", [alt.Player.local.vehicle])
-            let vehicle = (<alt.Vehicle>await network.callback("spawnVehicle", [hash]))
-            let handle = Game.setTimedInterval(() => {
-                if (vehicle.scriptID) {
-                    game.setPedIntoVehicle(alt.Player.local.scriptID, vehicle.scriptID, VehicleSeat.Driver)
+        this.addItem(new NativeUI.UIMenuItem(Vehicle.getDisplayNameFromModel(hash)), async () => {
+            let setIntoVehicle = (this.parentMenu as VehicleSpawnerMenu).setIntoVehicle.Checked
+            if (setIntoVehicle)
+                await network.callback("destroyVehicle", [alt.Player.local.vehicle])
+            let vehicle = <alt.Vehicle>await network.callback("spawnVehicle", [hash])
+            let handle = Game.setTimedInterval(async () => {
+                if (vehicle?.scriptID) {
+                    if (setIntoVehicle)
+                        game.setPedIntoVehicle(alt.Player.local.scriptID, vehicle.scriptID, VehicleSeat.Driver)
                     alt.clearInterval(handle)
                 }
-            }, 100)
+            })
         })
     }
 }

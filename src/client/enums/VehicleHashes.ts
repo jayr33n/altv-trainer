@@ -1,6 +1,4 @@
-// Los Santos Summer Special
 // https://wiki.rage.mp/index.php?title=Vehicles
-
 enum VehicleHashes {
     Adder = 0xb779a091,
     Airbus = 0x4c80eb0e,

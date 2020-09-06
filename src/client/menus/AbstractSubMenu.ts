@@ -1,16 +1,22 @@
 import AbstractMenu from "./AbstractMenu"
-import * as NativeUI from "../include/NativeUI/NativeUi"
+import menuPool from "../modules/MenuPool"
+import { UIMenuItem } from "../include/NativeUI/NativeUi"
 
 export default abstract class AbstractSubMenu extends AbstractMenu {
-    parentMenu: NativeUI.Menu
-    menuItem: NativeUI.UIMenuItem
+    parentMenu: AbstractMenu
+    menuItem: UIMenuItem
 
-    constructor(parentMenu: NativeUI.Menu, title: string) {
+    protected constructor(parentMenu: AbstractMenu, title: string) {
         super(title)
         this.parentMenu = parentMenu
-        this.menuItem = new NativeUI.UIMenuItem(title)
+        this.menuItem = new UIMenuItem(title)
         this.menuItem.RightLabel = "→→→"
-        this.parentMenu.AddItem(this.menuItem)
-        this.parentMenu.AddSubMenu(this.menuObject, this.menuItem)
+        this.parentMenu.addItem(this.menuItem)
+        this.parentMenu.menuObject.AddSubMenu(this.menuObject, this.menuItem)
+    }
+
+    protected remove() {
+        this.parentMenu.menuObject.RemoveItem(this.menuItem)
+        menuPool.remove(this.menuObject)
     }
 }

@@ -1,7 +1,7 @@
 import * as alt from "alt-client"
 
 class Network {
-    callbacks: { [id: string]: (result: object) => void } = {}
+    private callbacks: { [id: string]: (result: object) => void } = {}
 
     init() {
         alt.onServer("network:sendCallback", (key, value) => {
