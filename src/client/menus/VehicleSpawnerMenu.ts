@@ -13,7 +13,7 @@ import AbstractMenu from "./AbstractMenu"
 
 export default class VehicleSpawnerMenu extends AbstractSubMenu {
     private classMenus: ClassMenu[]
-    setIntoVehicle: NativeUI.UIMenuCheckboxItem
+    setIntoVehicleItem: NativeUI.UIMenuCheckboxItem
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
@@ -43,8 +43,8 @@ export default class VehicleSpawnerMenu extends AbstractSubMenu {
             new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.OpenWheel), VehicleClass.OpenWheel),
         ]
         this.addClassMenus()
-        this.addItem(this.setIntoVehicle = new NativeUI.UIMenuCheckboxItem("Set As Driver", true))
-        this.setIntoVehicle.LeftBadge = NativeUI.BadgeStyle.Alert
+        this.addItem(this.setIntoVehicleItem = new NativeUI.UIMenuCheckboxItem("Set As Driver", true))
+        this.setIntoVehicleItem.LeftBadge = NativeUI.BadgeStyle.Alert
     }
 
     private getMenuFromVehicleClass(vehicleClass: VehicleClass) {
@@ -69,11 +69,11 @@ class ClassMenu extends AbstractSubMenu {
 
     addVehicle(hash: number) {
         this.addItem(new NativeUI.UIMenuItem(Vehicle.getDisplayNameFromModel(hash)), async () => {
-            let setIntoVehicle = (this.parentMenu as VehicleSpawnerMenu).setIntoVehicle.Checked
+            let setIntoVehicle = (this.parentMenu as VehicleSpawnerMenu).setIntoVehicleItem.Checked
             if (setIntoVehicle)
                 await network.callback("destroyVehicle", [alt.Player.local.vehicle])
             let vehicle = <alt.Vehicle>await network.callback("spawnVehicle", [hash])
-            let handle = Game.setTimedInterval(async () => {
+            let handle = Game.setTimedInterval(() => {
                 if (vehicle?.scriptID) {
                     if (setIntoVehicle)
                         game.setPedIntoVehicle(alt.Player.local.scriptID, vehicle.scriptID, VehicleSeat.Driver)

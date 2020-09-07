@@ -10,17 +10,18 @@ import Game from "../utils/Game"
 import AbstractMenu from "./AbstractMenu"
 import VehicleColorMenu from "./VehicleColorMenu"
 import VehicleWheelsMenu from "./VehicleWheelsMenu"
+import VehicleMenu from "./VehicleMenu"
 
 export default class VehicleCustomizationMenu extends AbstractSubMenu {
     vehicle: alt.Vehicle
     private modMenus: ModMenu[]
-    private bennys: BennysMenu
+    private bennysMenu: BennysMenu
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
         new VehicleColorMenu(this, "Vehicle Colors")
         new VehicleWheelsMenu(this, "Vehicle Wheels")
-        this.bennys = new BennysMenu(this, "Benny's Original")
+        this.bennysMenu = new BennysMenu(this, "Benny's Original Motor Works")
         this.modMenus = [
             new ModMenu(this, "Armor", VehicleMod.Armor),
             new ModMenu(this, "Brakes", VehicleMod.Brakes),
@@ -39,17 +40,10 @@ export default class VehicleCustomizationMenu extends AbstractSubMenu {
             new ModMenu(this, "Spoiler", VehicleMod.Spoiler),
             new ModMenu(this, "Suspension", VehicleMod.Suspension),
             new ModMenu(this, "Transmission", VehicleMod.Transmission),
-        ].concat(this.bennys.modMenus)
+        ].concat(this.bennysMenu.modMenus)
         this.menuObject.MenuOpen.on(() => {
-            if (!alt.Player.local.vehicle) {
-                this.vehicle = undefined
-                Game.lockMenuItems(this.menuObject)
-            }
-            else if (this.vehicle != alt.Player.local.vehicle) {
-                this.vehicle = alt.Player.local.vehicle
-                Game.unlockMenuItems(this.menuObject)
-                this.addModMenus()
-            }
+            this.vehicle = (this.parentMenu as VehicleMenu).vehicle
+            this.addModMenus()
         })
     }
 

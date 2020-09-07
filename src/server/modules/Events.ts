@@ -1,5 +1,4 @@
 import * as alt from "alt-server"
-import Vehicle from "../utils/Vehicle"
 
 class Events {
     private callbacks: { [id: string]: (player: alt.Player, args: any[]) => any } = {}
@@ -23,7 +22,7 @@ class Events {
         this.callbacks["setVehicleMod"] = (player, args) => {
             try {
                 let vehicle = <alt.Vehicle>args[0]
-                Vehicle.installModkit(vehicle)
+                vehicle.modKit = 1
                 vehicle.setMod(args[1], args[2])
             } catch (error) { alt.logError(error) }
         }
@@ -52,11 +51,10 @@ class Events {
         this.callbacks["setVehicleWheels"] = (player, args) => {
             try {
                 let vehicle = <alt.Vehicle>args[0]
-                Vehicle.installModkit(vehicle)
+                vehicle.modKit = 1
                 vehicle.setWheels(args[1], args[2])
                 vehicle.setRearWheels(args[2])
-            }
-            catch (error) { alt.logError(error) }
+            } catch (error) { alt.logError(error) }
         }
     }
 }

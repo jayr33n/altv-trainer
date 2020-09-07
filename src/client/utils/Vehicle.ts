@@ -13,6 +13,10 @@ export default class Vehicle {
         return [colors[1], colors[2], extra[1], extra[2]]
     }
 
+    static repair(vehicle: alt.Vehicle) {
+        game.setVehicleFixed(vehicle.scriptID)
+    }
+
     static getLocalizedClassName(vehicleClass: VehicleClass) {
         return game.getLabelText("VEH_CLASS_" + vehicleClass)
     }

@@ -11,21 +11,21 @@ import Vehicle from "../utils/Vehicle"
 export default class VehicleColorMenu extends AbstractSubMenu {
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        new ColorMenu(this, "Primary", 0)
-        new ColorMenu(this, "Secondary", 1)
-        new ColorMenu(this, "Pearlescent", 2)
-        new ColorMenu(this, "Rim", 3)
+        new ColorMenu(this, "Primary Color", 0)
+        new ColorMenu(this, "Secondary Color", 1)
+        new ColorMenu(this, "Pearlescent Color", 2)
+        new ColorMenu(this, "Rim Color", 3)
     }
 }
 
 class ColorMenu extends AbstractSubMenu {
-    private type: number
+    private colorType: number
 
-    constructor(parentMenu: AbstractMenu, title: string, type: number) {
+    constructor(parentMenu: AbstractMenu, title: string, colorType: number) {
         super(parentMenu, title)
-        this.type = type
+        this.colorType = colorType
         this.menuObject.MenuOpen.on(() => {
-            Game.selectItem(this.menuObject.MenuItems.find(item => item.Text.replace(/\s+/g, '') == VehicleColor[Vehicle.getColors(((this.parentMenu as VehicleColorMenu).parentMenu as VehicleCustomizationMenu).vehicle)[this.type]]))
+            Game.selectItem(this.menuObject.MenuItems.find(item => item.Text.replace(/\s+/g, '') == VehicleColor[Vehicle.getColors(((this.parentMenu as VehicleColorMenu).parentMenu as VehicleCustomizationMenu).vehicle)[this.colorType]]))
         })
         this.addColors()
     }
@@ -34,7 +34,7 @@ class ColorMenu extends AbstractSubMenu {
         Enum.getValues(VehicleColor).forEach(color => {
             let item = new NativeUI.UIMenuItem(VehicleColor[+color].replace(/([A-Z])/g, ' $1').trim())
             this.addItem(item, async () => {
-                await network.callback("setVehicleColor", [((this.parentMenu as VehicleColorMenu).parentMenu as VehicleCustomizationMenu).vehicle, this.type, +color])
+                await network.callback("setVehicleColor", [((this.parentMenu as VehicleColorMenu).parentMenu as VehicleCustomizationMenu).vehicle, this.colorType, +color])
                 Game.selectItem(item)
             })
         })
