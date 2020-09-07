@@ -10,7 +10,9 @@ enum VehicleWheelType {
     Bike,
     HighEnd,
     BennysOriginal,
-    BennysBespoke
+    BennysBespoke,
+    Race,
+    Street
 }
 
 export default VehicleWheelType

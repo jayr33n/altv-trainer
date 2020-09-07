@@ -23,7 +23,9 @@ export default class VehicleWheelsMenu extends AbstractSubMenu {
             new WheelsMenu(this, "Bike", VehicleWheelType.Bike, 72),
             new WheelsMenu(this, "High End", VehicleWheelType.HighEnd, 40),
             new WheelsMenu(this, "Benny's Original", VehicleWheelType.BennysOriginal, 217),
-            new WheelsMenu(this, "Benny's Bespoke", VehicleWheelType.BennysBespoke, 217)
+            new WheelsMenu(this, "Benny's Bespoke", VehicleWheelType.BennysBespoke, 217),
+            new WheelsMenu(this, "Race", VehicleWheelType.Race, 140),
+            new WheelsMenu(this, "Street", VehicleWheelType.Street, 210)
         ]
         this.menuObject.MenuOpen.on(() => {
             let type = game.getVehicleWheelType(VehicleMenu.vehicle.scriptID)

@@ -1,15 +1,15 @@
 // https://wiki.rage.mp/index.php?title=Vehicle_Mods
 enum VehicleMod {
     Spoiler,
-    FrontBumper,
+    FrontBumpers,
     RearBumper,
     Skirts,
     Exhaust,
     Frame,
     Grille,
     Hood,
-    Fender,
-    RightFender,
+    Fenders,
+    RearFenders,
     Roof,
     Engine,
     Brakes,
