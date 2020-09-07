@@ -54,6 +54,7 @@ class Events {
                 let vehicle = <alt.Vehicle>args[0]
                 Vehicle.installModkit(vehicle)
                 vehicle.setWheels(args[1], args[2])
+                vehicle.setRearWheels(args[2])
             }
             catch (error) { alt.logError(error) }
         }

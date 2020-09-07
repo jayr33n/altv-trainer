@@ -5,28 +5,27 @@ import Enum from "../utils/Enum"
 import VehicleColor from "../enums/VehicleColor"
 import network from "../modules/Network"
 import VehicleCustomizationMenu from "./VehicleCustomizationMenu"
-import VehicleColorType from "../enums/VehicleColorType"
 import Game from "../utils/Game"
 import Vehicle from "../utils/Vehicle"
 
 export default class VehicleColorMenu extends AbstractSubMenu {
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        new ColorMenu(this, "Primary", VehicleColorType.Primary)
-        new ColorMenu(this, "Secondary", VehicleColorType.Secondary)
-        new ColorMenu(this, "Pearlescent", VehicleColorType.Pearlescent)
-        new ColorMenu(this, "Rim", VehicleColorType.Rim)
+        new ColorMenu(this, "Primary", 0)
+        new ColorMenu(this, "Secondary", 1)
+        new ColorMenu(this, "Pearlescent", 2)
+        new ColorMenu(this, "Rim", 3)
     }
 }
 
 class ColorMenu extends AbstractSubMenu {
-    private type: VehicleColorType
+    private type: number
 
-    constructor(parentMenu: AbstractMenu, title: string, type: VehicleColorType) {
+    constructor(parentMenu: AbstractMenu, title: string, type: number) {
         super(parentMenu, title)
         this.type = type
         this.menuObject.MenuOpen.on(() => {
-            Game.selectItem(this.menuObject.MenuItems.find(item => item.Text.replace(/\s+/g, '') == VehicleColor[Vehicle.getColors(((this.parentMenu as VehicleColorMenu).parentMenu as VehicleCustomizationMenu).vehicle)[type]]))
+            Game.selectItem(this.menuObject.MenuItems.find(item => item.Text.replace(/\s+/g, '') == VehicleColor[Vehicle.getColors(((this.parentMenu as VehicleColorMenu).parentMenu as VehicleCustomizationMenu).vehicle)[this.type]]))
         })
         this.addColors()
     }
