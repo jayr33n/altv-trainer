@@ -13,14 +13,15 @@ import VehicleWheelsMenu from "./VehicleWheelsMenu"
 import VehicleMenu from "./VehicleMenu"
 
 export default class VehicleCustomizationMenu extends AbstractSubMenu {
-    vehicle: alt.Vehicle
     private modMenus: ModMenu[]
+    private vehicleColorMenu: VehicleColorMenu
+    private vehicleWheelsMenu: VehicleWheelsMenu
     private bennysMenu: BennysMenu
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        new VehicleColorMenu(this, "Vehicle Colors")
-        new VehicleWheelsMenu(this, "Vehicle Wheels")
+        this.vehicleColorMenu = new VehicleColorMenu(this, "Vehicle Colors")
+        this.vehicleWheelsMenu = new VehicleWheelsMenu(this, "Vehicle Wheels")
         this.bennysMenu = new BennysMenu(this, "Benny's Original Motor Works")
         this.modMenus = [
             new ModMenu(this, "Armor", VehicleMod.Armor),
@@ -42,7 +43,6 @@ export default class VehicleCustomizationMenu extends AbstractSubMenu {
             new ModMenu(this, "Transmission", VehicleMod.Transmission),
         ].concat(this.bennysMenu.modMenus)
         this.menuObject.MenuOpen.on(() => {
-            this.vehicle = (this.parentMenu as VehicleMenu).vehicle
             this.addModMenus()
         })
     }
@@ -52,10 +52,8 @@ export default class VehicleCustomizationMenu extends AbstractSubMenu {
     }
 
     private addModMenus() {
-        Vehicle.installModKit(this.vehicle)
-        Enum.getValues(VehicleMod).forEach(mod => {
-            this.getMenuFromMod(+mod)?.init(this.vehicle)
-        })
+        Vehicle.installModKit(VehicleMenu.vehicle)
+        Enum.getValues(VehicleMod).forEach(mod => this.getMenuFromMod(+mod)?.init(VehicleMenu.vehicle))
     }
 }
 
@@ -105,7 +103,7 @@ class ModMenu extends AbstractSubMenu {
         this.menuObject.Clear()
         this.numMods = game.getNumVehicleMods(vehicle.scriptID, this.mod)
         if (this.numMods == 0)
-            this.menuItem.Enabled = false
+            Game.lockMenuItem(this.menuItem)
         else {
             this.addMods(vehicle)
             Game.selectItem(this.menuObject.MenuItems[game.getVehicleMod(vehicle.scriptID, this.mod) + 1])

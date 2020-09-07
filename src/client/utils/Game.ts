@@ -7,6 +7,23 @@ export default class Game {
         alt.log("[Debug] " + message)
     }
 
+    static async playAnimation(dict: string, name: string) {
+        await this.loadAnimationDict(dict)
+        game.taskPlayAnim(alt.Player.local.scriptID, dict, name, 8, 8, -1, 0, 0, false, false, true)
+    }
+
+    static async loadAnimationDict(dict: string) {
+        await new Promise((resolve) => {
+            game.requestAnimDict(dict)
+            let handle = this.setTimedInterval(() => {
+                if (game.hasAnimDictLoaded(dict)) {
+                    resolve()
+                    alt.clearInterval(handle)
+                }
+            })
+        })
+    }
+
     static async getUserInput(length: number) {
         game.displayOnscreenKeyboard(6, "FMMC_KEY_TIP8", "", "", "", "", "", length)
         return await new Promise((resolve) => {
@@ -36,12 +53,20 @@ export default class Game {
         item.RightBadge = NativeUI.BadgeStyle.Car
     }
 
+    static lockMenuItem(menuItem: NativeUI.UIMenuItem) {
+        menuItem.Enabled = false
+    }
+
     static lockMenuItems(menu: NativeUI.Menu) {
-        menu.MenuItems.forEach(item => item.Enabled = false)
+        menu.MenuItems.forEach(item => this.lockMenuItem(item))
+    }
+
+    static unlockMenuItem(menuItem: NativeUI.UIMenuItem) {
+        menuItem.Enabled = true
     }
 
     static unlockMenuItems(menu: NativeUI.Menu) {
-        menu.MenuItems.forEach(item => item.Enabled = true)
+        menu.MenuItems.forEach(item => this.unlockMenuItem(item))
     }
 
     static sortMenuItems(menu: NativeUI.Menu) {

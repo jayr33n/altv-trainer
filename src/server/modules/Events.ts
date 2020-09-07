@@ -56,6 +56,22 @@ class Events {
                 vehicle.setRearWheels(args[2])
             } catch (error) { alt.logError(error) }
         }
+        this.callbacks["respawnPlayer"] = (player, args) => {
+            try {
+                player.spawn(player.pos.x, player.pos.y, player.pos.z, 0)
+            } catch (error) { alt.logError(error) }
+        }
+        this.callbacks["healPlayer"] = (player, args) => {
+            try {
+                player.health = player.maxHealth
+                player.armour = player.maxArmour
+            } catch (error) { alt.logError(error) }
+        }
+        this.callbacks["setPlayerModel"] = (player, args) => {
+            try {
+                player.model = args[0]
+            } catch (error) { alt.logError(error) }
+        }
     }
 }
 

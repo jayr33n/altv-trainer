@@ -52,9 +52,7 @@ export default class VehicleSpawnerMenu extends AbstractSubMenu {
     }
 
     private addClassMenus() {
-        Enum.getValues(VehicleHashes).forEach(hash => {
-            this.getMenuFromVehicleClass(game.getVehicleClassFromName(+hash)).addVehicle(+hash)
-        })
+        Enum.getValues(VehicleHashes).forEach(hash => this.getMenuFromVehicleClass(game.getVehicleClassFromName(+hash)).addVehicle(+hash))
         this.classMenus.forEach(menu => Game.sortMenuItems(menu.menuObject))
     }
 }
