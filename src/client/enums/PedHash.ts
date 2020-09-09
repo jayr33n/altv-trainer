@@ -738,7 +738,7 @@ enum PedHash {
     u_m_y_sbike = 0x6AF4185D,
     u_m_y_staggrm_01 = 0x9194CE03,
     u_m_y_tattoo_01 = 0x94AE2B8C,
-    u_m_y_zombie_01 = 0xAC4B4506,
+    u_m_y_zombie_01 = 0xAC4B4506
 }
 
 export default PedHash

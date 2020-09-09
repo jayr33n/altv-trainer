@@ -6,11 +6,11 @@ import VehicleMod from "../enums/VehicleMod"
 import Enum from "../utils/Enum"
 import network from "../modules/Network"
 import Vehicle from "../utils/Vehicle"
-import Game from "../utils/Game"
 import AbstractMenu from "./AbstractMenu"
 import VehicleColorMenu from "./VehicleColorMenu"
 import VehicleWheelsMenu from "./VehicleWheelsMenu"
 import VehicleMenu from "./VehicleMenu"
+import Menu from "../utils/Menu"
 
 export default class VehicleCustomizationMenu extends AbstractSubMenu {
     private modMenus: ModMenu[]
@@ -43,9 +43,7 @@ export default class VehicleCustomizationMenu extends AbstractSubMenu {
             new ModMenu(this, "Suspension", VehicleMod.Suspension),
             new ModMenu(this, "Transmission", VehicleMod.Transmission),
         ].concat(this.bennysMenu.modMenus)
-        this.menuObject.MenuOpen.on(() => {
-            this.addModMenus()
-        })
+        this.menuObject.MenuOpen.on(() => this.addModMenus())
     }
 
     private getMenuFromMod(mod: VehicleMod) {
@@ -103,10 +101,10 @@ class ModMenu extends AbstractSubMenu {
         this.menuObject.Clear()
         this.numMods = game.getNumVehicleMods(vehicle.scriptID, this.mod)
         if (this.numMods == 0)
-            Game.lockMenuItem(this.menuItem)
+            Menu.lockMenuItem(this.menuItem)
         else {
             this.addMods(vehicle)
-            Game.selectItem(this.menuObject.MenuItems[game.getVehicleMod(vehicle.scriptID, this.mod) + 1])
+            Menu.selectItem(this.menuObject.MenuItems[game.getVehicleMod(vehicle.scriptID, this.mod) + 1])
         }
     }
 
@@ -115,7 +113,7 @@ class ModMenu extends AbstractSubMenu {
             let item = new NativeUI.UIMenuItem(this.menuItem.Text + " #" + _i)
             this.addItem(item, async () => {
                 await network.callback("setVehicleMod", [vehicle, this.mod, _i])
-                Game.selectItem(item)
+                Menu.selectItem(item)
             })
         }
     }

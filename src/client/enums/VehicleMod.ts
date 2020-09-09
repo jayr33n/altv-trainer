@@ -41,7 +41,7 @@ enum VehicleMod {
     Visor,
     Tank,
     Details,
-    Livery = 48,
+    Livery = 48
 }
 
 export default VehicleMod

@@ -3,10 +3,10 @@ import * as NativeUI from "../include/NativeUI/NativeUi"
 import AbstractSubMenu from "./AbstractSubMenu"
 import AbstractMenu from "./AbstractMenu"
 import VehicleWheelType from "../enums/VehicleWheelType"
-import Game from "../utils/Game"
 import network from "../modules/Network"
 import VehicleMod from "../enums/VehicleMod"
 import VehicleMenu from "./VehicleMenu"
+import Menu from "../utils/Menu"
 
 export default class VehicleWheelsMenu extends AbstractSubMenu {
     private wheelsMenu: WheelsMenu[]
@@ -31,7 +31,7 @@ export default class VehicleWheelsMenu extends AbstractSubMenu {
             let type = game.getVehicleWheelType(VehicleMenu.vehicle.scriptID)
             let index = game.getVehicleMod(VehicleMenu.vehicle.scriptID, VehicleMod.FrontWheels)
             if (index != -1)
-                Game.selectItem(this.wheelsMenu[type].menuObject.MenuItems[index])
+                Menu.selectItem(this.wheelsMenu[type].menuObject.MenuItems[index])
         })
     }
 }
@@ -43,7 +43,7 @@ class WheelsMenu extends AbstractSubMenu {
             let item = new NativeUI.UIMenuItem(_i.toString())
             this.addItem(item, async () => {
                 await network.callback("setVehicleWheels", [VehicleMenu.vehicle, type, _i + 1])
-                Game.selectItem(item)
+                Menu.selectItem(item)
             })
         }
     }

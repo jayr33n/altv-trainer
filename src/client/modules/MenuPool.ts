@@ -19,12 +19,10 @@ class MenuPool {
 
     add(menu: NativeUI.Menu) {
         menuPool.menus.push(menu)
-        //Game.logDebug("added to menu pool " + menuPool.menus.length)
     }
 
     remove(menu: NativeUI.Menu) {
         menuPool.menus = menuPool.menus.filter(x => x !== menu)
-        //Game.logDebug("removed from menu pool " + menuPool.menus.length)
     }
 
     private isAnyMenuOpen() {

@@ -72,6 +72,26 @@ class Events {
                 player.model = args[0]
             } catch (error) { alt.logError(error) }
         }
+        this.callbacks["setWorldTime"] = (player, args) => {
+            try {
+                alt.Player.all.forEach(player => alt.emitClient(player, "world:setTime", args[0], args[1], args[2]))
+            } catch (error) { alt.logError(error) }
+        }
+        this.callbacks["setWorldWeather"] = (player, args) => {
+            try {
+                alt.Player.all.forEach(player => alt.emitClient(player, "world:setWeather", args[0]))
+            } catch (error) { alt.logError(error) }
+        }
+        this.callbacks["setWorldCloudHat"] = (player, args) => {
+            try {
+                alt.Player.all.forEach(player => alt.emitClient(player, "world:setCloudHat", args[0]))
+            } catch (error) { alt.logError(error) }
+        }
+        this.callbacks["setWorldCloudHatOpacity"] = (player, args) => {
+            try {
+                alt.Player.all.forEach(player => alt.emitClient(player, "world:setCloudHatOpacity", args[0]))
+            } catch (error) { alt.logError(error) }
+        }
     }
 }
 

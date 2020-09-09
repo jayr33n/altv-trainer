@@ -1,5 +1,6 @@
 enum Key {
-    M = 0x4D
+    M = 77,
+    F7 = 118
 }
 
 export default Key

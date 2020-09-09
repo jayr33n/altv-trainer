@@ -3,7 +3,7 @@ enum VehicleSeat {
     Driver,
     Passenger,
     LeftRear,
-    RightRear,
+    RightRear
 }
 
 export default VehicleSeat

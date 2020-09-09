@@ -11,11 +11,17 @@ export default abstract class AbstractMenu {
         this.menuObject.ItemSelect.on((item: NativeUI.UIMenuItem) => item.Data())
         this.menuObject.CheckboxChange.on((item: NativeUI.UIMenuCheckboxItem, state: boolean) => item.Data(state))
         this.menuObject.DynamicListChange.on((item: NativeUI.UIMenuDynamicListItem, index: number, direction: NativeUI.ChangeDirection) => item.Data(index, direction))
+        this.menuObject.ListChange.on((item: NativeUI.UIMenuListItem, index: number) => item.Data(index))
         menuPool.add(this.menuObject)
     }
 
     addItem<T extends NativeUI.UIMenuItem>(item: T, handler = () => { }) {
         item.Data = handler
         this.menuObject.AddItem(item)
+    }
+
+    addUserInputItem<T extends NativeUI.UIMenuItem>(item: T, handler: () => void) {
+        item.RightLabel = "[ ... ]"
+        this.addItem(item, handler)
     }
 }

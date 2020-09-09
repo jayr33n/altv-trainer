@@ -5,11 +5,12 @@ import AbstractSubMenu from "./AbstractSubMenu"
 import VehicleHashes from "../enums/VehicleHashes"
 import Enum from "../utils/Enum"
 import network from "../modules/Network"
-import Game from "../utils/Game"
 import VehicleSeat from "../enums/VehicleSeat"
 import VehicleClass from "../enums/VehicleClass"
 import Vehicle from "../utils/Vehicle"
 import AbstractMenu from "./AbstractMenu"
+import tick from "../modules/Tick"
+import Menu from "../utils/Menu"
 
 export default class VehicleSpawnerMenu extends AbstractSubMenu {
     private classMenus: ClassMenu[]
@@ -42,18 +43,14 @@ export default class VehicleSpawnerMenu extends AbstractSubMenu {
             new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Trains), VehicleClass.Trains),
             new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.OpenWheel), VehicleClass.OpenWheel),
         ]
-        this.addClassMenus()
+        Enum.getValues(VehicleHashes).forEach(hash => this.getMenuFromVehicleClass(game.getVehicleClassFromName(+hash)).addVehicle(+hash))
+        this.classMenus.forEach(menu => Menu.sortMenuItems(menu.menuObject))
         this.addItem(this.setIntoVehicleItem = new NativeUI.UIMenuCheckboxItem("Set As Driver", true))
         this.setIntoVehicleItem.LeftBadge = NativeUI.BadgeStyle.Alert
     }
 
     private getMenuFromVehicleClass(vehicleClass: VehicleClass) {
         return this.classMenus.find(menu => menu.vehicleClass == vehicleClass)
-    }
-
-    private addClassMenus() {
-        Enum.getValues(VehicleHashes).forEach(hash => this.getMenuFromVehicleClass(game.getVehicleClassFromName(+hash)).addVehicle(+hash))
-        this.classMenus.forEach(menu => Game.sortMenuItems(menu.menuObject))
     }
 }
 
@@ -71,13 +68,13 @@ class ClassMenu extends AbstractSubMenu {
             if (setIntoVehicle)
                 await network.callback("destroyVehicle", [alt.Player.local.vehicle])
             let vehicle = <alt.Vehicle>await network.callback("spawnVehicle", [hash])
-            let handle = Game.setTimedInterval(() => {
+            tick.register("setPedIntoVehicle", () => {
                 if (vehicle?.scriptID) {
                     if (setIntoVehicle)
                         game.setPedIntoVehicle(alt.Player.local.scriptID, vehicle.scriptID, VehicleSeat.Driver)
-                    alt.clearInterval(handle)
+                    tick.clear("setPedIntoVehicle")
                 }
-            })
+            }, 50, 3000)
         })
     }
 }
