@@ -22,7 +22,7 @@ export default class VehicleCustomizationMenu extends AbstractSubMenu {
         super(parentMenu, title)
         this.vehicleColorMenu = new VehicleColorMenu(this, "Vehicle Colors")
         this.vehicleWheelsMenu = new VehicleWheelsMenu(this, "Vehicle Wheels")
-        this.bennysMenu = new BennysMenu(this, "Benny's Original Motor Works")
+        this.bennysMenu = new BennysMenu(this, "Vehicle Benny's Original")
         this.modMenus = [
             new ModMenu(this, "Armor", VehicleMod.Armor),
             new ModMenu(this, "Brakes", VehicleMod.Brakes),
@@ -43,16 +43,10 @@ export default class VehicleCustomizationMenu extends AbstractSubMenu {
             new ModMenu(this, "Suspension", VehicleMod.Suspension),
             new ModMenu(this, "Transmission", VehicleMod.Transmission),
         ].concat(this.bennysMenu.modMenus)
-        this.menuObject.MenuOpen.on(() => this.addModMenus())
-    }
-
-    private getMenuFromMod(mod: VehicleMod) {
-        return this.modMenus.find(menu => menu.mod == mod)
-    }
-
-    private addModMenus() {
-        Vehicle.installModKit(VehicleMenu.vehicle)
-        Enum.getValues(VehicleMod).forEach(mod => this.getMenuFromMod(+mod)?.init(VehicleMenu.vehicle))
+        this.menuObject.MenuOpen.on(() => {
+            Vehicle.installModKit(VehicleMenu.vehicle)
+            Enum.getValues(VehicleMod).forEach(mod => this.modMenus.find(menu => menu.mod == +mod)?.init(VehicleMenu.vehicle))
+        })
     }
 }
 
@@ -103,18 +97,14 @@ class ModMenu extends AbstractSubMenu {
         if (this.numMods == 0)
             Menu.lockMenuItem(this.menuItem)
         else {
-            this.addMods(vehicle)
+            for (let _i = 0; _i <= this.numMods; _i++) {
+                let item = new NativeUI.UIMenuItem(this.menuItem.Text + " #" + _i)
+                this.addItem(item, async () => {
+                    await network.callback("setVehicleMod", [vehicle, this.mod, _i])
+                    Menu.selectItem(item)
+                })
+            }
             Menu.selectItem(this.menuObject.MenuItems[game.getVehicleMod(vehicle.scriptID, this.mod) + 1])
-        }
-    }
-
-    private addMods(vehicle: alt.Vehicle) {
-        for (let _i = 0; _i <= this.numMods; _i++) {
-            let item = new NativeUI.UIMenuItem(this.menuItem.Text + " #" + _i)
-            this.addItem(item, async () => {
-                await network.callback("setVehicleMod", [vehicle, this.mod, _i])
-                Menu.selectItem(item)
-            })
         }
     }
 }

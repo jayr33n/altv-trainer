@@ -36,18 +36,9 @@ export default class PlayerMenu extends AbstractSubMenu {
         this.addItem(this.playerInvisibilityItem = new NativeUI.UIMenuCheckboxItem("Player Invisibility"), (state?: boolean) => game.setEntityVisible(alt.Player.local.scriptID, !state, false))
         this.addItem(this.playerGodmodeItem = new NativeUI.UIMenuCheckboxItem("Player Godmode"), (state?: boolean) => Entity.setInvincible(alt.Player.local, state))
         this.addItem(this.noRagdollItem = new NativeUI.UIMenuCheckboxItem("No Ragdoll"), (state?: boolean) => game.setPedCanRagdoll(alt.Player.local.scriptID, !state))
-        this.addItem(this.superJumpItem = new NativeUI.UIMenuCheckboxItem("Super Jump"), (state?: boolean) => {
-            if (state) tick.register("enableSuperJumpThisFrame", () => game.setSuperJumpThisFrame(alt.Player.local.scriptID), 0)
-            else tick.clear("enableSuperJumpThisFrame")
-        })
-        this.addItem(this.fastRunItem = new NativeUI.UIMenuCheckboxItem("Fast Run"), (state?: boolean) => {
-            if (state) game.setRunSprintMultiplierForPlayer(alt.Player.local.scriptID, 1.49)
-            else game.setRunSprintMultiplierForPlayer(alt.Player.local.scriptID, 1)
-        })
-        this.addItem(this.fastSwimItem = new NativeUI.UIMenuCheckboxItem("Fast Swim"), (state?: boolean) => {
-            if (state) game.setSwimMultiplierForPlayer(alt.Player.local.scriptID, 1.49)
-            else game.setSwimMultiplierForPlayer(alt.Player.local.scriptID, 1)
-        })
+        this.addItem(this.superJumpItem = new NativeUI.UIMenuCheckboxItem("Super Jump"), (state?: boolean) => state ? tick.register("enableSuperJumpThisFrame", () => game.setSuperJumpThisFrame(alt.Player.local.scriptID), 0) : tick.clear("enableSuperJumpThisFrame"))
+        this.addItem(this.fastRunItem = new NativeUI.UIMenuCheckboxItem("Fast Run"), (state?: boolean) => state ? game.setRunSprintMultiplierForPlayer(alt.Player.local.scriptID, 1.49) : game.setRunSprintMultiplierForPlayer(alt.Player.local.scriptID, 1))
+        this.addItem(this.fastSwimItem = new NativeUI.UIMenuCheckboxItem("Fast Swim"), (state?: boolean) => state ? game.setSwimMultiplierForPlayer(alt.Player.local.scriptID, 1.49) : game.setSwimMultiplierForPlayer(alt.Player.local.scriptID, 1))
         this.addItem(this.thermalVisionItem = new NativeUI.UIMenuCheckboxItem("Thermal Vision"), (state?: boolean) => game.setSeethrough(state))
         this.addItem(this.nightVisionItem = new NativeUI.UIMenuCheckboxItem("Night Vision"), (state?: boolean) => game.setNightvision(state))
         this.addItem(this.suicideItem = new NativeUI.UIMenuItem("Suicide"), async () => {
@@ -68,9 +59,7 @@ class PlayerModelMenu extends AbstractSubMenu {
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
         this.addUserInputItem(this.customPlayerModelItem = new NativeUI.UIMenuItem("Custom Player Model"), async () => await network.callback("setPlayerModel", [alt.hash(await Game.getUserInput())]))
-        Enum.getValues(PedHash).forEach(hash => {
-            this.addItem(new NativeUI.UIMenuItem(PedHash[+hash]), async () => await network.callback("setPlayerModel", [+hash]))
-        })
+        Enum.getValues(PedHash).forEach(hash => this.addItem(new NativeUI.UIMenuItem(PedHash[+hash]), async () => await network.callback("setPlayerModel", [+hash])))
     }
 }
 

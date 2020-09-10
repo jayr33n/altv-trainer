@@ -29,10 +29,7 @@ class ColorMenu extends AbstractSubMenu {
     constructor(parentMenu: AbstractMenu, title: string, colorType: number) {
         super(parentMenu, title)
         this.colorType = colorType
-        this.menuObject.MenuOpen.on(() => {
-            Menu.selectItem(this.menuObject.MenuItems.find(item => item.Text.replace(/\s+/g, '') ==
-                VehicleColor[Vehicle.getColors(VehicleMenu.vehicle)[this.colorType]]))
-        })
+        this.menuObject.MenuOpen.on(() => Menu.selectItem(this.menuObject.MenuItems.find(item => item.Text.replace(/\s+/g, '') == VehicleColor[Vehicle.getColors(VehicleMenu.vehicle)[this.colorType]])))
         Enum.getValues(VehicleColor).forEach(color => {
             let item = new NativeUI.UIMenuItem(VehicleColor[+color].replace(/([A-Z])/g, ' $1').trim())
             this.addItem(item, async () => {

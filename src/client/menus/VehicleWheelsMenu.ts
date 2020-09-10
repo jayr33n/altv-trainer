@@ -10,6 +10,7 @@ import Menu from "../utils/Menu"
 
 export default class VehicleWheelsMenu extends AbstractSubMenu {
     private wheelsMenu: WheelsMenu[]
+    stockWheels: NativeUI.UIMenuItem
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
@@ -27,11 +28,14 @@ export default class VehicleWheelsMenu extends AbstractSubMenu {
             new WheelsMenu(this, "Race", VehicleWheelType.Race, 140),
             new WheelsMenu(this, "Street", VehicleWheelType.Street, 210)
         ]
+        this.addItem(this.stockWheels = new NativeUI.UIMenuItem("Stock Wheels"), async () => {
+            await network.callback("setVehicleWheels", [VehicleMenu.vehicle, 0, 0])
+            Menu.selectItem(this.stockWheels)
+        })
         this.menuObject.MenuOpen.on(() => {
             let type = game.getVehicleWheelType(VehicleMenu.vehicle.scriptID)
             let index = game.getVehicleMod(VehicleMenu.vehicle.scriptID, VehicleMod.FrontWheels)
-            if (index != -1)
-                Menu.selectItem(this.wheelsMenu[type].menuObject.MenuItems[index])
+            index != -1 ? Menu.selectItem(this.wheelsMenu[type].menuObject.MenuItems[index]) : Menu.selectItem(this.stockWheels)
         })
     }
 }
@@ -44,6 +48,7 @@ class WheelsMenu extends AbstractSubMenu {
             this.addItem(item, async () => {
                 await network.callback("setVehicleWheels", [VehicleMenu.vehicle, type, _i + 1])
                 Menu.selectItem(item)
+                Menu.deselectItem((this.parentMenu as VehicleWheelsMenu).stockWheels)
             })
         }
     }

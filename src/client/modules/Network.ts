@@ -23,7 +23,7 @@ class Network {
         alt.onServer("world:setCloudHatOpacity", (opacity: number) => game.setCloudHatOpacity(opacity))
     }
 
-    async callback(key: string, args: any[] = [], timeout = 10000) {
+    async callback(key: string, args: any[] = []) {
         return await new Promise((resolve) => {
             alt.emitServer("network:requestCallback", key, args)
             this.callbacks[key] = resolve

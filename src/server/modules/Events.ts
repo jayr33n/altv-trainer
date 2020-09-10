@@ -14,9 +14,7 @@ class Events {
         }
         this.callbacks["destroyVehicle"] = (player, args) => {
             try {
-                let vehicle = <alt.Vehicle>args[0]
-                if (vehicle)
-                    vehicle.destroy()
+                (<alt.Vehicle>args[0]).destroy()
             } catch (error) { alt.logError(error) }
         }
         this.callbacks["setVehicleMod"] = (player, args) => {
@@ -56,42 +54,20 @@ class Events {
                 vehicle.setRearWheels(args[2])
             } catch (error) { alt.logError(error) }
         }
-        this.callbacks["respawnPlayer"] = (player, args) => {
-            try {
-                player.spawn(player.pos.x, player.pos.y, player.pos.z, 0)
-            } catch (error) { alt.logError(error) }
-        }
+        this.callbacks["respawnPlayer"] = (player, args) => player.spawn(player.pos.x, player.pos.y, player.pos.z, 0)
         this.callbacks["healPlayer"] = (player, args) => {
-            try {
-                player.health = player.maxHealth
-                player.armour = player.maxArmour
-            } catch (error) { alt.logError(error) }
+            player.health = player.maxHealth
+            player.armour = player.maxArmour
         }
         this.callbacks["setPlayerModel"] = (player, args) => {
             try {
                 player.model = args[0]
             } catch (error) { alt.logError(error) }
         }
-        this.callbacks["setWorldTime"] = (player, args) => {
-            try {
-                alt.Player.all.forEach(player => alt.emitClient(player, "world:setTime", args[0], args[1], args[2]))
-            } catch (error) { alt.logError(error) }
-        }
-        this.callbacks["setWorldWeather"] = (player, args) => {
-            try {
-                alt.Player.all.forEach(player => alt.emitClient(player, "world:setWeather", args[0]))
-            } catch (error) { alt.logError(error) }
-        }
-        this.callbacks["setWorldCloudHat"] = (player, args) => {
-            try {
-                alt.Player.all.forEach(player => alt.emitClient(player, "world:setCloudHat", args[0]))
-            } catch (error) { alt.logError(error) }
-        }
-        this.callbacks["setWorldCloudHatOpacity"] = (player, args) => {
-            try {
-                alt.Player.all.forEach(player => alt.emitClient(player, "world:setCloudHatOpacity", args[0]))
-            } catch (error) { alt.logError(error) }
-        }
+        this.callbacks["setWorldTime"] = (player, args) => alt.Player.all.forEach(player => alt.emitClient(player, "world:setTime", args[0], args[1], args[2]))
+        this.callbacks["setWorldWeather"] = (player, args) => alt.Player.all.forEach(player => alt.emitClient(player, "world:setWeather", args[0]))
+        this.callbacks["setWorldCloudHat"] = (player, args) => alt.Player.all.forEach(player => alt.emitClient(player, "world:setCloudHat", args[0]))
+        this.callbacks["setWorldCloudHatOpacity"] = (player, args) => alt.Player.all.forEach(player => alt.emitClient(player, "world:setCloudHatOpacity", args[0]))
     }
 }
 

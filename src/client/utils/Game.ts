@@ -23,13 +23,11 @@ export default class Game {
     }
 
     static isModelValid(hash: number) {
-        if (game.isModelInCdimage(hash) || game.isModelValid(hash) || game.isWeaponValid(hash))
-            return true
-        return false
+        return game.isModelInCdimage(hash) || game.isModelValid(hash) || game.isWeaponValid(hash) ? true : false
     }
 
     static async requestModel(hash: number) {
-        await new Promise((resolve, reject) => {
+        await new Promise((resolve) => {
             if (this.isModelValid(hash)) {
                 game.requestModel(hash)
                 tick.register("requestModel", () => {
@@ -39,7 +37,6 @@ export default class Game {
                     }
                 }, 50, 3000)
             }
-            else reject("invalid model")
         })
     }
 

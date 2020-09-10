@@ -65,16 +65,17 @@ class ClassMenu extends AbstractSubMenu {
     addVehicle(hash: number) {
         this.addItem(new NativeUI.UIMenuItem(Vehicle.getDisplayNameFromModel(hash)), async () => {
             let setIntoVehicle = (this.parentMenu as VehicleSpawnerMenu).setIntoVehicleItem.Checked
-            if (setIntoVehicle)
+            if (setIntoVehicle && alt.Player.local.vehicle)
                 await network.callback("destroyVehicle", [alt.Player.local.vehicle])
             let vehicle = <alt.Vehicle>await network.callback("spawnVehicle", [hash])
-            tick.register("setPedIntoVehicle", () => {
-                if (vehicle?.scriptID) {
-                    if (setIntoVehicle)
+            if (setIntoVehicle) {
+                tick.register("setPedIntoVehicle", () => {
+                    if (vehicle?.scriptID) {
                         game.setPedIntoVehicle(alt.Player.local.scriptID, vehicle.scriptID, VehicleSeat.Driver)
-                    tick.clear("setPedIntoVehicle")
-                }
-            }, 50, 3000)
+                        tick.clear("setPedIntoVehicle")
+                    }
+                }, 50, 3000)
+            }
         })
     }
 }

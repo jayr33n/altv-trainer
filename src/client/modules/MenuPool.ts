@@ -27,7 +27,10 @@ class MenuPool {
 
     private isAnyMenuOpen() {
         let result = false
-        this.menus.forEach(menu => { if (menu.Visible) result = true })
+        this.menus.forEach(menu => {
+            if (menu.Visible)
+                result = true
+        })
         return result
     }
 }
