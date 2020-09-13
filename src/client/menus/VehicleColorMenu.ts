@@ -3,7 +3,6 @@ import AbstractSubMenu from "./AbstractSubMenu"
 import AbstractMenu from "./AbstractMenu"
 import Enum from "../utils/Enum"
 import VehicleColor from "../enums/VehicleColor"
-import network from "../modules/Network"
 import Vehicle from "../utils/Vehicle"
 import VehicleMenu from "./VehicleMenu"
 import Menu from "../utils/Menu"
@@ -29,12 +28,12 @@ class ColorMenu extends AbstractSubMenu {
     constructor(parentMenu: AbstractMenu, title: string, colorType: number) {
         super(parentMenu, title)
         this.colorType = colorType
-        this.menuObject.MenuOpen.on(() => Menu.selectItem(this.menuObject.MenuItems.find(item => item.Text.replace(/\s+/g, '') == VehicleColor[Vehicle.getColors(VehicleMenu.vehicle)[this.colorType]])))
+        this.menuObject.MenuOpen.on(() => Menu.selectItem(this.menuObject.MenuItems.find(item => item.Text.replace(/\s+/g, '') == VehicleColor[Vehicle.getColors(VehicleMenu.vehicle)[this.colorType]]), NativeUI.BadgeStyle.Car))
         Enum.getValues(VehicleColor).forEach(color => {
             let item = new NativeUI.UIMenuItem(VehicleColor[+color].replace(/([A-Z])/g, ' $1').trim())
-            this.addItem(item, async () => {
-                await network.callback("setVehicleColor", [VehicleMenu.vehicle, this.colorType, +color])
-                Menu.selectItem(item)
+            this.addItem(item, () => {
+                Vehicle.setColor(VehicleMenu.vehicle, this.colorType, +color)
+                Menu.selectItem(item, NativeUI.BadgeStyle.Car)
             })
         })
     }

@@ -3,11 +3,12 @@ import * as game from "natives"
 import Weather from "../enums/Weather"
 
 class Network {
-    private callbacks: { [id: string]: (result: [object]) => void } = {}
+    private callbackID = 0
+    private callbacks: { [id: number]: (result: [object]) => void } = {}
 
     init() {
-        alt.onServer("network:sendCallback", (key: string, value: any) => this.callbacks[key](value))
-        alt.onServer("world:setTime", (hours: number, minutes: number, seconds: number) => game.networkOverrideClockTime(hours, minutes, seconds))
+        alt.onServer("network:sendCallback", (id: number, value: any) => this.callbacks[id](value))
+        alt.onServer("world:setTime", (hours: number, minutes: number, seconds: number) => game.setClockTime(hours, minutes, seconds))
         alt.onServer("world:setWeather", (weather: Weather) => {
             game.setWeatherTypeNow(Weather[weather])
             if (weather == Weather.Xmas) {
@@ -25,8 +26,9 @@ class Network {
 
     async callback(key: string, args: any[] = []) {
         return await new Promise((resolve) => {
-            alt.emitServer("network:requestCallback", key, args)
-            this.callbacks[key] = resolve
+            alt.emitServer("network:requestCallback", this.callbackID, key, args)
+            this.callbacks[this.callbackID] = resolve
+            this.callbackID++
         })
     }
 }

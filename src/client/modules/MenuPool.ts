@@ -4,15 +4,15 @@ import MainMenu from "../menus/MainMenu"
 import Key from "../enums/Key"
 
 class MenuPool {
+    release = "1.0.0"
     private menus: NativeUI.Menu[] = []
-    private mainMenu: MainMenu
 
     init() {
-        this.mainMenu = new MainMenu("Main Menu")
+        let mainMenu = new MainMenu("Main Menu")
         alt.on("keyup", (key: number) => {
             if (key == Key.M) {
                 if (!this.isAnyMenuOpen())
-                    this.mainMenu.menuObject.Open()
+                    mainMenu.menuObject.Open()
             }
         })
     }

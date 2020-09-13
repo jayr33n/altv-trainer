@@ -3,10 +3,10 @@ import * as NativeUI from "../include/NativeUI/NativeUi"
 import AbstractSubMenu from "./AbstractSubMenu"
 import AbstractMenu from "./AbstractMenu"
 import VehicleWheelType from "../enums/VehicleWheelType"
-import network from "../modules/Network"
 import VehicleMod from "../enums/VehicleMod"
 import VehicleMenu from "./VehicleMenu"
 import Menu from "../utils/Menu"
+import Vehicle from "../utils/Vehicle"
 
 export default class VehicleWheelsMenu extends AbstractSubMenu {
     private wheelsMenu: WheelsMenu[]
@@ -28,14 +28,14 @@ export default class VehicleWheelsMenu extends AbstractSubMenu {
             new WheelsMenu(this, "Race", VehicleWheelType.Race, 140),
             new WheelsMenu(this, "Street", VehicleWheelType.Street, 210)
         ]
-        this.addItem(this.stockWheels = new NativeUI.UIMenuItem("Stock Wheels"), async () => {
-            await network.callback("setVehicleWheels", [VehicleMenu.vehicle, 0, 0])
-            Menu.selectItem(this.stockWheels)
+        this.addItem(this.stockWheels = new NativeUI.UIMenuItem("Stock Wheels"), () => {
+            Vehicle.setWheels(VehicleMenu.vehicle, 0, 0)
+            Menu.selectItem(this.stockWheels, NativeUI.BadgeStyle.Car)
         })
         this.menuObject.MenuOpen.on(() => {
             let type = game.getVehicleWheelType(VehicleMenu.vehicle.scriptID)
             let index = game.getVehicleMod(VehicleMenu.vehicle.scriptID, VehicleMod.FrontWheels)
-            index != -1 ? Menu.selectItem(this.wheelsMenu[type].menuObject.MenuItems[index]) : Menu.selectItem(this.stockWheels)
+            index != -1 ? Menu.selectItem(this.wheelsMenu[type].menuObject.MenuItems[index], NativeUI.BadgeStyle.Car) : Menu.selectItem(this.stockWheels, NativeUI.BadgeStyle.Car)
         })
     }
 }
@@ -45,9 +45,9 @@ class WheelsMenu extends AbstractSubMenu {
         super(parentMenu, title)
         for (let _i = 0; _i < num; _i++) {
             let item = new NativeUI.UIMenuItem(_i.toString())
-            this.addItem(item, async () => {
-                await network.callback("setVehicleWheels", [VehicleMenu.vehicle, type, _i + 1])
-                Menu.selectItem(item)
+            this.addItem(item, () => {
+                Vehicle.setWheels(VehicleMenu.vehicle, type, _i)
+                Menu.selectItem(item, NativeUI.BadgeStyle.Car)
                 Menu.deselectItem((this.parentMenu as VehicleWheelsMenu).stockWheels)
             })
         }

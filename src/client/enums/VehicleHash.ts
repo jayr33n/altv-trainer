@@ -1,5 +1,5 @@
 // https://wiki.rage.mp/index.php?title=Vehicles
-enum VehicleHashes {
+enum VehicleHash {
     Adder = 0xb779a091,
     Airbus = 0x4c80eb0e,
     Airtug = 0x5d0aac8f,
@@ -704,4 +704,4 @@ enum VehicleHashes {
     Ztype = 0x2d3bd401
 }
 
-export default VehicleHashes
+export default VehicleHash

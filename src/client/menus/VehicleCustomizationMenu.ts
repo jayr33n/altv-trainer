@@ -4,7 +4,6 @@ import * as NativeUI from "../include/NativeUI/NativeUi"
 import AbstractSubMenu from "./AbstractSubMenu"
 import VehicleMod from "../enums/VehicleMod"
 import Enum from "../utils/Enum"
-import network from "../modules/Network"
 import Vehicle from "../utils/Vehicle"
 import AbstractMenu from "./AbstractMenu"
 import VehicleColorMenu from "./VehicleColorMenu"
@@ -44,7 +43,7 @@ export default class VehicleCustomizationMenu extends AbstractSubMenu {
             new ModMenu(this, "Transmission", VehicleMod.Transmission),
         ].concat(this.bennysMenu.modMenus)
         this.menuObject.MenuOpen.on(() => {
-            Vehicle.installModKit(VehicleMenu.vehicle)
+            game.setVehicleModKit(VehicleMenu.vehicle.scriptID, 0)
             Enum.getValues(VehicleMod).forEach(mod => this.modMenus.find(menu => menu.mod == +mod)?.init(VehicleMenu.vehicle))
         })
     }
@@ -99,12 +98,12 @@ class ModMenu extends AbstractSubMenu {
         else {
             for (let _i = 0; _i <= this.numMods; _i++) {
                 let item = new NativeUI.UIMenuItem(this.menuItem.Text + " #" + _i)
-                this.addItem(item, async () => {
-                    await network.callback("setVehicleMod", [vehicle, this.mod, _i])
-                    Menu.selectItem(item)
+                this.addItem(item, () => {
+                    Vehicle.setMod(vehicle, this.mod, _i)
+                    Menu.selectItem(item, NativeUI.BadgeStyle.Car)
                 })
             }
-            Menu.selectItem(this.menuObject.MenuItems[game.getVehicleMod(vehicle.scriptID, this.mod) + 1])
+            Menu.selectItem(this.menuObject.MenuItems[game.getVehicleMod(vehicle.scriptID, this.mod) + 1], NativeUI.BadgeStyle.Car)
         }
     }
 }

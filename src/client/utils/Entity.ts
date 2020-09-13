@@ -6,12 +6,16 @@ export default class Entity {
         return !game.getEntityCanBeDamaged(entity.scriptID)
     }
 
-    static kill(entity: alt.Entity) {
-        game.setEntityHealth(entity.scriptID, 0, 0)
-    }
-
     static setInvincible(entity: alt.Entity, toggle: boolean) {
         game.setEntityCanBeDamaged(entity.scriptID, !toggle)
         game.setEntityInvincible(entity.scriptID, toggle)
+    }
+
+    static isVisible(entity: alt.Entity) {
+        return game.isEntityVisible(entity.scriptID)
+    }
+
+    static setVisible(entity: alt.Entity, state: boolean) {
+        game.setEntityVisible(entity.scriptID, state, false)
     }
 }

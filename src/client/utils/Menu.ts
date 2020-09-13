@@ -1,7 +1,7 @@
 import * as NativeUI from "../include/NativeUI/NativeUi"
 
 export default class Menu {
-    static selectItem(item: NativeUI.UIMenuItem, badge = NativeUI.BadgeStyle.Car) {
+    static selectItem(item: NativeUI.UIMenuItem, badge: NativeUI.BadgeStyle) {
         item.Parent.MenuItems.forEach(item => this.deselectItem(item))
         item.Enabled = false
         item.RightBadge = badge

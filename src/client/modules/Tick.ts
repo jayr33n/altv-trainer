@@ -3,12 +3,13 @@ import * as alt from "alt-client"
 class Tick {
     handlers: { [id: string]: number } = {}
 
-    register(id: string, handler: () => void, miliseconds: number, timeout = -1) {
+    register(id: string, handler: () => void, miliseconds: number, timeout = -1, timeoutHandler = () => { }) {
         let handle = alt.setInterval(handler, miliseconds)
         if (timeout != -1)
             alt.setTimeout(() => {
                 if ((this.handlers[id])) {
                     this.clear(id)
+                    timeoutHandler()
                     alt.logWarning(id + " timed out")
                 }
             }, timeout)

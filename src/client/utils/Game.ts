@@ -2,13 +2,10 @@ import * as alt from "alt-client"
 import * as game from "natives"
 import Weather from "../enums/Weather"
 import tick from "../modules/Tick"
-import AnimationFlag from "../enums/AnimationFlag"
+import network from "../modules/Network"
 
 export default class Game {
-    static async playAnimation(dict: string, name: string, flag = AnimationFlag.Normal) {
-        await this.loadAnimationDict(dict)
-        game.taskPlayAnim(alt.Player.local.scriptID, dict, name, 8, 8, -1, flag, 0, false, false, true)
-    }
+    static isCreatingVehicle = false
 
     static async loadAnimationDict(dict: string) {
         await new Promise((resolve) => {
@@ -46,7 +43,7 @@ export default class Game {
         game.createObject(model, position.x, position.y, position.z, true, true, dynamic)
     }
 
-    static async getUserInput(length = 30): Promise<string> {
+    static async getUserInput(length = 30) {
         game.displayOnscreenKeyboard(6, "FMMC_KEY_TIP8", "", "", "", "", "", length)
         return await new Promise((resolve) => {
             tick.register("awaitUserInput", () => {
@@ -55,7 +52,23 @@ export default class Game {
                     tick.clear("awaitUserInput")
                 }
             }, 0)
-        })
+        }) as string
+    }
+
+    static async setTime(hours: number, minutes: number, seconds: number) {
+        await network.callback("setWorldTime", [hours, minutes, seconds])
+    }
+
+    static async setWeather(weather: Weather) {
+        await network.callback("setWorldWeather", [weather])
+    }
+
+    static async setCloudHat(cloudHat: string) {
+        await network.callback("setWorldCloudHat", [cloudHat])
+    }
+
+    static async setCloudHatOpacity(opacity: number) {
+        network.callback("setWorldCloudHatOpacity", [opacity])
     }
 
     static getCurrentWeather() {

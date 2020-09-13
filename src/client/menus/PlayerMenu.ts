@@ -3,14 +3,14 @@ import * as game from "natives"
 import * as NativeUI from "../include/NativeUI/NativeUi"
 import AbstractMenu from "./AbstractMenu"
 import AbstractSubMenu from "./AbstractSubMenu"
-import Entity from "../utils/Entity"
-import network from "../modules/Network"
 import Enum from "../utils/Enum"
 import PedHash from "../enums/PedHash"
 import Game from "../utils/Game"
 import tick from "../modules/Tick"
 import AnimationFlag from "../enums/AnimationFlag"
 import Menu from "../utils/Menu"
+import Player from "../utils/Player"
+import Ped from "../utils/Ped"
 
 export default class PlayerMenu extends AbstractSubMenu {
     private animationsMenu: AnimationsMenu
@@ -31,10 +31,10 @@ export default class PlayerMenu extends AbstractSubMenu {
         super(parentMenu, title)
         this.animationsMenu = new AnimationsMenu(this, "Animations")
         this.playerModelMenu = new PlayerModelMenu(this, "Player Model")
-        this.addItem(this.revivePlayerItem = new NativeUI.UIMenuItem("Revive Player"), async () => await network.callback("respawnPlayer"))
-        this.addItem(this.healPlayerItem = new NativeUI.UIMenuItem("Heal Player"), async () => await network.callback("healPlayer"))
-        this.addItem(this.playerInvisibilityItem = new NativeUI.UIMenuCheckboxItem("Player Invisibility"), (state?: boolean) => game.setEntityVisible(alt.Player.local.scriptID, !state, false))
-        this.addItem(this.playerGodmodeItem = new NativeUI.UIMenuCheckboxItem("Player Godmode"), (state?: boolean) => Entity.setInvincible(alt.Player.local, state))
+        this.addItem(this.revivePlayerItem = new NativeUI.UIMenuItem("Revive Player"), () => Player.respawn())
+        this.addItem(this.healPlayerItem = new NativeUI.UIMenuItem("Heal Player"), () => Player.heal())
+        this.addItem(this.playerInvisibilityItem = new NativeUI.UIMenuCheckboxItem("Player Invisibility"), (state?: boolean) => Player.setVisible(alt.Player.local, !state))
+        this.addItem(this.playerGodmodeItem = new NativeUI.UIMenuCheckboxItem("Player Godmode"), (state?: boolean) => Player.setInvincible(alt.Player.local, state))
         this.addItem(this.noRagdollItem = new NativeUI.UIMenuCheckboxItem("No Ragdoll"), (state?: boolean) => game.setPedCanRagdoll(alt.Player.local.scriptID, !state))
         this.addItem(this.superJumpItem = new NativeUI.UIMenuCheckboxItem("Super Jump"), (state?: boolean) => state ? tick.register("enableSuperJumpThisFrame", () => game.setSuperJumpThisFrame(alt.Player.local.scriptID), 0) : tick.clear("enableSuperJumpThisFrame"))
         this.addItem(this.fastRunItem = new NativeUI.UIMenuCheckboxItem("Fast Run"), (state?: boolean) => state ? game.setRunSprintMultiplierForPlayer(alt.Player.local.scriptID, 1.49) : game.setRunSprintMultiplierForPlayer(alt.Player.local.scriptID, 1))
@@ -43,9 +43,9 @@ export default class PlayerMenu extends AbstractSubMenu {
         this.addItem(this.nightVisionItem = new NativeUI.UIMenuCheckboxItem("Night Vision"), (state?: boolean) => game.setNightvision(state))
         this.addItem(this.suicideItem = new NativeUI.UIMenuItem("Suicide"), async () => {
             Menu.lockMenuItem(this.suicideItem)
-            await Game.playAnimation("mp_suicide", "pill")
+            await Player.playAnimation(alt.Player.local, "mp_suicide", "pill")
             alt.setTimeout(() => {
-                Entity.kill(alt.Player.local)
+                Ped.kill(alt.Player.local)
                 Menu.unlockMenuItem(this.suicideItem)
             }, 3200)
         })
@@ -58,8 +58,8 @@ class PlayerModelMenu extends AbstractSubMenu {
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.addUserInputItem(this.customPlayerModelItem = new NativeUI.UIMenuItem("Custom Player Model"), async () => await network.callback("setPlayerModel", [alt.hash(await Game.getUserInput())]))
-        Enum.getValues(PedHash).forEach(hash => this.addItem(new NativeUI.UIMenuItem(PedHash[+hash]), async () => await network.callback("setPlayerModel", [+hash])))
+        this.addUserInputItem(this.customPlayerModelItem = new NativeUI.UIMenuItem("Custom Player Model"), async () => Player.setModel(alt.hash(await Game.getUserInput())))
+        Enum.getValues(PedHash).forEach(hash => this.addItem(new NativeUI.UIMenuItem(PedHash[+hash]), () => Player.setModel(+hash)))
     }
 }
 
@@ -85,18 +85,16 @@ class AnimationsMenu extends AbstractSubMenu {
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.addUserInputItem(this.customAnimationItem = new NativeUI.UIMenuItem("Play Custom Animation", "Requires ~b~dictionary~s~ and ~b~name~s~."), async () => {
-            Game.playAnimation(await Game.getUserInput(), await Game.getUserInput())
-            Menu.lockMenuItem(this.customAnimationItem)
-            alt.setTimeout(() => Menu.unlockMenuItem(this.customAnimationItem), 3000)
-        })
+        this.addUserInputItem(this.customAnimationItem = new NativeUI.UIMenuItem("Play Custom Animation", "Requires ~b~dictionary~s~ and ~b~name~s~."), async () => await this.playAnimation(await Game.getUserInput(), await Game.getUserInput(), this.customAnimationItem))
         this.animations.forEach(animation => {
             let item = new NativeUI.UIMenuItem(animation[1])
-            this.addItem(item, async () => {
-                await Game.playAnimation(animation[0], animation[1], AnimationFlag.EnablePlayerControl)
-                Menu.selectItem(item, NativeUI.BadgeStyle.Tick)
-                alt.setTimeout(() => Menu.deselectItem(item), game.getAnimDuration(animation[0], animation[1]) * 1000)
-            })
+            this.addItem(item, async () => await this.playAnimation(animation[0], animation[1], item))
         })
+    }
+
+    private async playAnimation(dict: string, value: string, item: NativeUI.UIMenuItem) {
+        await Player.playAnimation(alt.Player.local, dict, value, AnimationFlag.EnablePlayerControl)
+        Menu.selectItem(item, NativeUI.BadgeStyle.Tick)
+        alt.setTimeout(() => Menu.deselectItem(item), game.getAnimDuration(dict, value) * 1000)
     }
 }

@@ -2,54 +2,29 @@ import * as alt from "alt-client"
 import * as game from "natives"
 import * as NativeUI from "../include/NativeUI/NativeUi"
 import AbstractSubMenu from "./AbstractSubMenu"
-import VehicleHashes from "../enums/VehicleHashes"
+import VehicleHash from "../enums/VehicleHash"
 import Enum from "../utils/Enum"
-import network from "../modules/Network"
-import VehicleSeat from "../enums/VehicleSeat"
 import VehicleClass from "../enums/VehicleClass"
 import Vehicle from "../utils/Vehicle"
 import AbstractMenu from "./AbstractMenu"
-import tick from "../modules/Tick"
 import Menu from "../utils/Menu"
+import Game from "../utils/Game"
 
 export default class VehicleSpawnerMenu extends AbstractSubMenu {
-    private classMenus: ClassMenu[]
-    setIntoVehicleItem: NativeUI.UIMenuCheckboxItem
+    setAsDriverItem: NativeUI.UIMenuCheckboxItem
+    private customVehicleItem: NativeUI.UIMenuItem
+    private classMenus: ClassMenu[] = []
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.classMenus = [
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Compacts), VehicleClass.Compacts),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Sedans), VehicleClass.Sedans),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.SUVs), VehicleClass.SUVs),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Coupes), VehicleClass.Coupes),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Muscle), VehicleClass.Muscle),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.SportsClassics), VehicleClass.SportsClassics),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Sports), VehicleClass.Sports),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Super), VehicleClass.Super),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Motorcycles), VehicleClass.Motorcycles),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.OffRoad), VehicleClass.OffRoad),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Industrial), VehicleClass.Industrial),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Utility), VehicleClass.Utility),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Vans), VehicleClass.Vans),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Cycles), VehicleClass.Cycles),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Boats), VehicleClass.Boats),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Helicopters), VehicleClass.Helicopters),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Planes), VehicleClass.Planes),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Service), VehicleClass.Service),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Emergency), VehicleClass.Emergency),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Military), VehicleClass.Military),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Commercial), VehicleClass.Commercial),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.Trains), VehicleClass.Trains),
-            new ClassMenu(this, Vehicle.getLocalizedClassName(VehicleClass.OpenWheel), VehicleClass.OpenWheel),
-        ]
-        Enum.getValues(VehicleHashes).forEach(hash => this.getMenuFromVehicleClass(game.getVehicleClassFromName(+hash)).addVehicle(+hash))
+        this.addUserInputItem(this.customVehicleItem = new NativeUI.UIMenuItem("Spawn Custom Vehicle"), async () => Vehicle.create(alt.hash(await Game.getUserInput()), this.setAsDriverItem.Checked))
+        this.addItem(this.setAsDriverItem = new NativeUI.UIMenuCheckboxItem("Set As Driver", true))
+        Enum.getValues(VehicleClass).forEach(vehicleClass => this.classMenus.push(new ClassMenu(this, Vehicle.getLocalizedClassName(+vehicleClass), +vehicleClass)))
+        Enum.getValues(VehicleHash).forEach(hash => this.getVehicleClassMenu(game.getVehicleClassFromName(+hash)).addVehicle(+hash))
         this.classMenus.forEach(menu => Menu.sortMenuItems(menu.menuObject))
-        this.addItem(this.setIntoVehicleItem = new NativeUI.UIMenuCheckboxItem("Set As Driver", true))
-        this.setIntoVehicleItem.LeftBadge = NativeUI.BadgeStyle.Alert
     }
 
-    private getMenuFromVehicleClass(vehicleClass: VehicleClass) {
+    private getVehicleClassMenu(vehicleClass: VehicleClass) {
         return this.classMenus.find(menu => menu.vehicleClass == vehicleClass)
     }
 }
@@ -62,20 +37,8 @@ class ClassMenu extends AbstractSubMenu {
         this.vehicleClass = vehicleClass
     }
 
-    addVehicle(hash: number) {
-        this.addItem(new NativeUI.UIMenuItem(Vehicle.getDisplayNameFromModel(hash)), async () => {
-            let setIntoVehicle = (this.parentMenu as VehicleSpawnerMenu).setIntoVehicleItem.Checked
-            if (setIntoVehicle && alt.Player.local.vehicle)
-                await network.callback("destroyVehicle", [alt.Player.local.vehicle])
-            let vehicle = <alt.Vehicle>await network.callback("spawnVehicle", [hash])
-            if (setIntoVehicle) {
-                tick.register("setPedIntoVehicle", () => {
-                    if (vehicle?.scriptID) {
-                        game.setPedIntoVehicle(alt.Player.local.scriptID, vehicle.scriptID, VehicleSeat.Driver)
-                        tick.clear("setPedIntoVehicle")
-                    }
-                }, 50, 3000)
-            }
-        })
+    addVehicle(hash: VehicleHash) {
+        let item = new NativeUI.UIMenuItem(Vehicle.getLocalizedDisplayName(hash))
+        this.addItem(item, () => Vehicle.create(hash, (this.parentMenu as VehicleSpawnerMenu).setAsDriverItem.Checked))
     }
 }
