@@ -1,3 +1,4 @@
+// https://gist.github.com/root-cause/3f29d38179b12245a003fb4fff615335
 enum AmmoType {
     Pistol = "AMMO_PISTOL",
     PistolTracer = "AMMO_PISTOL_TRACER",

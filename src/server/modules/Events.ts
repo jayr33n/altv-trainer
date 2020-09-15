@@ -10,6 +10,7 @@ class Events {
         this.callbacks["spawnVehicle"] = (player, args) => {
             try {
                 let vehicle = new alt.Vehicle(args[0], player.pos.x, player.pos.y, player.pos.z, player.rot.x, player.rot.y, player.rot.z)
+                vehicle.modKit = 1
                 vehicle.engineOn = true
                 vehicle.numberPlateText = "trainer"
                 return vehicle

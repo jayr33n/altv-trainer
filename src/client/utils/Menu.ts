@@ -13,7 +13,8 @@ export default class Menu {
     }
 
     static lockMenuItem(menuItem: NativeUI.UIMenuItem) {
-        menuItem.Enabled = false
+        if (menuItem)
+            menuItem.Enabled = false
     }
 
     static lockMenuItems(menu: NativeUI.Menu) {
@@ -21,7 +22,8 @@ export default class Menu {
     }
 
     static unlockMenuItem(menuItem: NativeUI.UIMenuItem) {
-        menuItem.Enabled = true
+        if (menuItem)
+            menuItem.Enabled = true
     }
 
     static unlockMenuItems(menu: NativeUI.Menu) {
