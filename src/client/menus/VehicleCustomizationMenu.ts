@@ -13,15 +13,15 @@ import Menu from "../utils/Menu"
 
 export default class VehicleCustomizationMenu extends AbstractSubMenu {
     private modMenus: ModMenu[]
+    private bennysMenu: BennysMenu
     private vehicleColorMenu: VehicleColorMenu
     private vehicleWheelsMenu: VehicleWheelsMenu
-    private bennysMenu: BennysMenu
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.vehicleColorMenu = new VehicleColorMenu(this, "Vehicle Colors")
-        this.vehicleWheelsMenu = new VehicleWheelsMenu(this, "Vehicle Wheels")
-        this.bennysMenu = new BennysMenu(this, "Vehicle Benny's Original")
+        this.bennysMenu = new BennysMenu(this, "Benny's Original")
+        this.vehicleColorMenu = new VehicleColorMenu(this, "Colors")
+        this.vehicleWheelsMenu = new VehicleWheelsMenu(this, "Wheels")
         this.modMenus = [
             new ModMenu(this, "Armor", VehicleMod.Armor),
             new ModMenu(this, "Brakes", VehicleMod.Brakes),
@@ -34,7 +34,7 @@ export default class VehicleCustomizationMenu extends AbstractSubMenu {
             new ModMenu(this, "Hood", VehicleMod.Hood),
             new ModMenu(this, "Horn", VehicleMod.Horn),
             new ModMenu(this, "Livery", VehicleMod.Livery),
-            new ModMenu(this, "Rear Bumper", VehicleMod.RearBumper),
+            new ModMenu(this, "Rear Bumpers", VehicleMod.RearBumper),
             new ModMenu(this, "Rear Fenders", VehicleMod.RearFenders),
             new ModMenu(this, "Roof", VehicleMod.Roof),
             new ModMenu(this, "Skirts", VehicleMod.Skirts),

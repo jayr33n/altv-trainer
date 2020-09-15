@@ -35,20 +35,19 @@ export default class Vehicle extends Entity {
         await network.callback("repairVehicle", [vehicle])
     }
 
-    static async create(hash: VehicleHash, driver: boolean) {
+    static async create(hash: VehicleHash) {
         if (!Game.isCreatingVehicle) {
             Game.isCreatingVehicle = true
-            if (driver && alt.Player.local.vehicle)
+            if (alt.Player.local.vehicle)
                 await this.delete(alt.Player.local.vehicle)
             let vehicle = await network.callback("spawnVehicle", [hash]) as alt.Vehicle
-            if (driver)
-                tick.register("setPedIntoVehicle", () => {
-                    if (vehicle?.scriptID) {
-                        game.setPedIntoVehicle(alt.Player.local.scriptID, vehicle.scriptID, VehicleSeat.Driver)
-                        tick.clear("setPedIntoVehicle")
-                        Game.isCreatingVehicle = false
-                    }
-                }, 50, 3000, () => Game.isCreatingVehicle = false)
+            tick.register("setPedIntoVehicle", () => {
+                if (vehicle?.scriptID) {
+                    game.setPedIntoVehicle(alt.Player.local.scriptID, vehicle.scriptID, VehicleSeat.Driver)
+                    tick.clear("setPedIntoVehicle")
+                    Game.isCreatingVehicle = false
+                }
+            }, 50, 3000, () => Game.isCreatingVehicle = false)
         }
     }
 

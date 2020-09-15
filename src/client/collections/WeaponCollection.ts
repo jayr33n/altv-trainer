@@ -84,7 +84,7 @@ export default class WeaponCollection {
         this.weapons[WeaponHash.MarksmanRifleMk2] = { name: "wt_mkrifle2", description: "wtd_mkrifle2" }
         this.weapons[WeaponHash.RPG] = { name: "wt_rpg", description: "wtd_rpg" }
         this.weapons[WeaponHash.GrenadeLauncher] = { name: "wt_cmpgl", description: "wtd_cmpgl" }
-        this.weapons[WeaponHash.GrenadeLauncherSmoke] = { name: "wt_gl_smoke", description: "wtd_gl_smoke" }
+        this.weapons[WeaponHash.TearGasLauncher] = { name: "wt_gl_smoke", description: "wtd_gl_smoke" }
         this.weapons[WeaponHash.Minigun] = { name: "wt_minigun", description: "wtd_minigun" }
         this.weapons[WeaponHash.FireworkLauncher] = { name: "wt_firewrk", description: "wtd_firewrk" }
         this.weapons[WeaponHash.Railgun] = { name: "wt_railgun", description: "wtd_railgun" }

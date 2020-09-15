@@ -5,6 +5,7 @@ import WorldMenu from "./WorldMenu"
 import OnlineMenu from "./OnlineMenu"
 import WeaponMenu from "./WeaponMenu"
 import VehicleSpawnerMenu from "./VehicleSpawnerMenu"
+import MiscMenu from "./MiscMenu"
 
 export default class MainMenu extends AbstractMenu {
     private onlineMenu: OnlineMenu
@@ -13,6 +14,7 @@ export default class MainMenu extends AbstractMenu {
     private vehicleSpawnerMenu: VehicleSpawnerMenu
     private weaponMenu: WeaponMenu
     private WorldMenu: WorldMenu
+    private miscMenu: MiscMenu
 
     constructor(title: string) {
         super(title)
@@ -22,5 +24,6 @@ export default class MainMenu extends AbstractMenu {
         this.vehicleSpawnerMenu = new VehicleSpawnerMenu(this, "Vehicle Spawner")
         this.weaponMenu = new WeaponMenu(this, "Weapon Options")
         this.WorldMenu = new WorldMenu(this, "World Options")
+        this.miscMenu = new MiscMenu(this, "Misc Options")
     }
 }

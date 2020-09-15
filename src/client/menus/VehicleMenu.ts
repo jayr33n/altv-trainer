@@ -19,8 +19,6 @@ export default class VehicleMenu extends AbstractSubMenu {
     private rainbowItem: NativeUI.UIMenuCheckboxItem
     private deleteVehicleItem: NativeUI.UIMenuItem
     private torqueMultiplier = 1
-    private colorIndex = 0
-    private rainbowColors = [29, 38, 89, 139, 140, 70, 145]
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
@@ -33,15 +31,6 @@ export default class VehicleMenu extends AbstractSubMenu {
         }, undefined, () => `${this.torqueMultiplier.toFixed(2)}`))
         this.addItem(this.invisibilityItem = new NativeUI.UIMenuCheckboxItem("Vehicle Invisibility"), (state?: boolean) => Vehicle.setVisible(VehicleMenu.vehicle, !state))
         this.addItem(this.godmodeItem = new NativeUI.UIMenuCheckboxItem("Vehicle Godmode"), (state?: boolean) => Vehicle.setInvincible(VehicleMenu.vehicle, state))
-        this.addItem(this.rainbowItem = new NativeUI.UIMenuCheckboxItem("Rainbow Vehicle"), (state?: boolean) => state ? tick.register("setVehicleRainbow", () => {
-            if (alt.Player.local.vehicle) {
-                if (this.colorIndex == this.rainbowColors.length)
-                    this.colorIndex = 0
-                Vehicle.setColor(alt.Player.local.vehicle, 0, this.rainbowColors[this.colorIndex])
-                Vehicle.setColor(alt.Player.local.vehicle, 1, this.rainbowColors[this.colorIndex])
-                this.colorIndex++
-            }
-        }, 500) : tick.clear("setVehicleRainbow"))
         this.addItem(this.deleteVehicleItem = new NativeUI.UIMenuItem("Delete Vehicle"), () => {
             Vehicle.delete(VehicleMenu.vehicle)
             this.menuObject.GoBack()

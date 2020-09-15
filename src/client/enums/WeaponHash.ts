@@ -74,7 +74,7 @@ enum WeaponHash {
     MarksmanRifleMk2 = 0x6a6c02e0,
     RPG = 0xb1ca77b1,
     GrenadeLauncher = 0xa284510b,
-    GrenadeLauncherSmoke = 0x4DD2DC56,
+    TearGasLauncher = 0x4DD2DC56,
     Minigun = 0x42bf8a85,
     FireworkLauncher = 0x7f7497e5,
     Railgun = 0x6d544c99,

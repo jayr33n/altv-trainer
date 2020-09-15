@@ -4,7 +4,6 @@ import MainMenu from "../menus/MainMenu"
 import Key from "../enums/Key"
 
 class MenuPool {
-    release = "1.0.0"
     private menus: NativeUI.Menu[] = []
 
     init() {

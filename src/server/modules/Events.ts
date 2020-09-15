@@ -67,10 +67,10 @@ class Events {
             player.model = args[0]
         }
         this.callbacks["setWorldTime"] = (player, args) => {
-            alt.Player.all.forEach(player => alt.emitClient(player, "world:setTime", args[0], args[1], args[2]))
+            alt.Player.all.forEach(player => player.setDateTime(0, 0, 0, args[0], args[1], args[2]))
         }
         this.callbacks["setWorldWeather"] = (player, args) => {
-            alt.Player.all.forEach(player => alt.emitClient(player, "world:setWeather", args[0]))
+            alt.Player.all.forEach(player => player.setWeather(args[0]))
         }
         this.callbacks["setWorldCloudHat"] = (player, args) => {
             alt.Player.all.forEach(player => alt.emitClient(player, "world:setCloudHat", args[0]))

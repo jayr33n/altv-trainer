@@ -11,14 +11,12 @@ import Menu from "../utils/Menu"
 import Game from "../utils/Game"
 
 export default class VehicleSpawnerMenu extends AbstractSubMenu {
-    setAsDriverItem: NativeUI.UIMenuCheckboxItem
     private customVehicleItem: NativeUI.UIMenuItem
     private classMenus: ClassMenu[] = []
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.addUserInputItem(this.customVehicleItem = new NativeUI.UIMenuItem("Spawn Custom Vehicle"), async () => Vehicle.create(alt.hash(await Game.getUserInput()), this.setAsDriverItem.Checked))
-        this.addItem(this.setAsDriverItem = new NativeUI.UIMenuCheckboxItem("Set As Driver", true))
+        this.addUserInputItem(this.customVehicleItem = new NativeUI.UIMenuItem("Spawn Custom Vehicle"), async () => Vehicle.create(alt.hash(await Game.getUserInput())))
         Enum.getValues(VehicleClass).forEach(vehicleClass => this.classMenus.push(new ClassMenu(this, Vehicle.getLocalizedClassName(+vehicleClass), +vehicleClass)))
         Enum.getValues(VehicleHash).forEach(hash => this.getVehicleClassMenu(game.getVehicleClassFromName(+hash)).addVehicle(+hash))
         this.classMenus.forEach(menu => Menu.sortMenuItems(menu.menuObject))
@@ -39,6 +37,6 @@ class ClassMenu extends AbstractSubMenu {
 
     addVehicle(hash: VehicleHash) {
         let item = new NativeUI.UIMenuItem(Vehicle.getLocalizedDisplayName(hash))
-        this.addItem(item, () => Vehicle.create(hash, (this.parentMenu as VehicleSpawnerMenu).setAsDriverItem.Checked))
+        this.addItem(item, () => Vehicle.create(hash))
     }
 }
