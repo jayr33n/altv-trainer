@@ -11,6 +11,7 @@ class Callbacks {
             try {
                 let vehicle = new alt.Vehicle(args[0], player.pos.x, player.pos.y, player.pos.z, player.rot.x, player.rot.y, player.rot.z)
                 vehicle.modKit = 1
+                vehicle.dirtLevel = 0
                 vehicle.engineOn = true
                 vehicle.numberPlateText = "trainer"
                 return vehicle
@@ -37,6 +38,10 @@ class Callbacks {
         this.callbacks["vehicle:repair"] = (player, args) => {
             let vehicle = args[0] as alt.Vehicle
             vehicle.bodyAdditionalHealth = vehicle.bodyHealth = vehicle.engineHealth = vehicle.petrolTankHealth = 1000
+        }
+        this.callbacks["vehicle:clean"] = (player, args) => {
+            let vehicle = args[0] as alt.Vehicle
+            vehicle.dirtLevel = 0
         }
         this.callbacks["vehicle:setColor"] = (player, args) => {
             let vehicle = args[0] as alt.Vehicle
@@ -76,8 +81,12 @@ class Callbacks {
         this.callbacks["player:removeAllWeapons"] = (player, args) => {
             player.removeAllWeapons()
         }
-        this.callbacks["player:teleportToEntity"] = (player, args) => {
+        this.callbacks["game:teleportPlayerToEntity"] = (player, args) => {
             alt.emitClient(args[0], "player:teleportToEntity", args[1])
+        }
+        this.callbacks["game:getPlayerIdentifiers"] = (player, args) => {
+            let target = args[0] as alt.Player
+            return [target.hwidHash, target.hwidExHash, target.socialId]
         }
         this.callbacks["game:setTime"] = (player, args) => {
             alt.Player.all.forEach(player => player.setDateTime(0, 0, 0, args[0], args[1], args[2]))
@@ -90,6 +99,9 @@ class Callbacks {
         }
         this.callbacks["game:setCloudHatOpacity"] = (player, args) => {
             alt.emitClient(null, "world:setCloudHatOpacity", args[0])
+        }
+        this.callbacks["game:setArtificialLightsState"] = (player, args) => {
+            alt.emitClient(null, "world:setArtificialLightsState", args[0])
         }
         this.callbacks["weapon:addComponent"] = (player, args) => {
             player.addWeaponComponent(args[0], args[1])

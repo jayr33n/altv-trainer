@@ -32,17 +32,13 @@ export default class Player extends Entity {
         await network.callback("player:removeAllWeapons")
     }
 
-    static async playAnimation(player: alt.Entity, dict: string, name: string, flag = AnimationFlag.Normal) {
+    static async playAnimation(dict: string, name: string, flag = AnimationFlag.Normal) {
         await Game.loadAnimationDict(dict)
-        game.taskPlayAnim(player.scriptID, dict, name, 8, 8, -1, flag, 0, false, false, true)
+        game.taskPlayAnim(alt.Player.local.scriptID, dict, name, 8, 8, -1, flag, 0, false, false, true)
     }
 
-    static teleportTo(player: alt.Entity, coord: alt.Vector3) {
+    static teleportTo(coord: alt.Vector3) {
         let pos = game.getClosestMajorVehicleNode(coord.x, coord.y, 0, undefined, 3.0, 0)[1]
-        game.setPedCoordsKeepVehicle(player.scriptID, pos.x, pos.y, pos.z)
-    }
-
-    static async teleportToEntity(entity: alt.Player, to: alt.Entity) {
-        await network.callback("player:teleportToEntity", [entity, to])
+        game.setPedCoordsKeepVehicle(alt.Player.local.scriptID, pos.x, pos.y, pos.z)
     }
 }

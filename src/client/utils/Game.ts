@@ -59,6 +59,14 @@ export default class Game {
         return game.getDistanceBetweenCoords(from.x, from.y, from.z, to.x, to.y, to.z, true)
     }
 
+    static async getPlayerIdentifiers(player: alt.Player) {
+        return await network.callback("game:getPlayerIdentifiers", [player]) as string[]
+    }
+
+    static async teleportPlayertoEntity(player: alt.Player, entity: alt.Entity) {
+        await network.callback("game:teleportPlayerToEntity", [player, entity])
+    }
+
     static async setTime(hours: number, minutes: number, seconds: number) {
         await network.callback("game:setTime", [hours, minutes, seconds])
     }
@@ -73,6 +81,10 @@ export default class Game {
 
     static async setCloudHatOpacity(opacity: number) {
         await network.callback("game:setCloudHatOpacity", [opacity])
+    }
+
+    static async setArtificialLightsState(state: boolean) {
+        await network.callback("game:setArtificialLightsState", [state])
     }
 
     static getCurrentWeather() {

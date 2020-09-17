@@ -34,6 +34,10 @@ export default class Vehicle extends Entity {
         await network.callback("vehicle:repair", [vehicle])
     }
 
+    static async clean(vehicle: alt.Vehicle) {
+        await network.callback("vehicle:clean", [vehicle])
+    }
+
     static async create(hash: VehicleHash) {
         if (!Game.isCreatingVehicle) {
             Game.isCreatingVehicle = true
