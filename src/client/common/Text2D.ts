@@ -19,8 +19,8 @@ export default class Text2D extends AbstractText {
         game.setTextColour(this.color.r, this.color.g, this.color.b, this.color.a)
         game.setTextFont(this.font)
         game.setTextOutline()
-        game.beginTextCommandDisplayText("STRING")
-        game.addTextComponentSubstringPlayerName(this.text)
+        game.beginTextCommandDisplayText("CELL_EMAIL_BCON");
+        this.text.match(/.{1,99}/g).forEach(text => game.addTextComponentSubstringPlayerName(text))
         game.endTextCommandDisplayText(this.position[0], this.position[1], 0)
     }
 }

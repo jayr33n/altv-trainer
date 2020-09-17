@@ -856,7 +856,7 @@ enum TimeCycleModifier {
     WhiteOut,
     winning_room,
     yacht_DLC,
-    yell_tunnel_nodirect,
+    yell_tunnel_nodirect
 }
 
 export default TimeCycleModifier

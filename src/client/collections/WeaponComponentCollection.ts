@@ -8,7 +8,7 @@ interface WeaponComponent {
 
 // https://gist.github.com/root-cause/3f29d38179b12245a003fb4fff615335
 export default class WeaponComponentCollection {
-    components: { [id: number]: WeaponComponent[] } = {}
+    components: Record<number, WeaponComponent[]> = {}
 
     constructor() {
         this.components[WeaponHash.KnuckleDusters] = [

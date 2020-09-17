@@ -7,7 +7,7 @@ interface WeaponObject {
 
 // https://gist.github.com/root-cause/3f29d38179b12245a003fb4fff615335
 export default class WeaponCollection {
-    weapons: { [id: number]: WeaponObject } = {}
+    weapons: Record<number, WeaponObject> = {}
 
     constructor() {
         this.weapons[WeaponHash.Dagger] = { name: "wt_dagger", description: "wtd_dagger" }

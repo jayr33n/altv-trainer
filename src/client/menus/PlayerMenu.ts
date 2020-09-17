@@ -10,16 +10,17 @@ import tick from "../modules/Tick"
 import AnimationFlag from "../enums/AnimationFlag"
 import Menu from "../utils/Menu"
 import Player from "../utils/Player"
-import Ped from "../utils/Ped"
 
 export default class PlayerMenu extends AbstractSubMenu {
-    private playerModelMenu: PlayerModelMenu
-    private customAnimationItem: NativeUI.UIMenuItem
-    private revivePlayerItem: NativeUI.UIMenuItem
-    private healPlayerItem: NativeUI.UIMenuItem
-    private playerInvisibilityItem: NativeUI.UIMenuCheckboxItem
-    private playerGodmodeItem: NativeUI.UIMenuCheckboxItem
-    private noRagdollItem: NativeUI.UIMenuCheckboxItem
+    private modelMenu: ModelMenu
+    private animationItem: NativeUI.UIMenuItem
+    private reviveItem: NativeUI.UIMenuItem
+    private healItem: NativeUI.UIMenuItem
+    private invisibilityItem: NativeUI.UIMenuCheckboxItem
+    private godmodeItem: NativeUI.UIMenuCheckboxItem
+    private ragdollItem: NativeUI.UIMenuCheckboxItem
+    private collisionItem: NativeUI.UIMenuCheckboxItem
+    private infiniteStaminaItem: NativeUI.UIMenuCheckboxItem
     private superJumpItem: NativeUI.UIMenuCheckboxItem
     private fastRunItem: NativeUI.UIMenuCheckboxItem
     private fastSwimItem: NativeUI.UIMenuCheckboxItem
@@ -29,14 +30,16 @@ export default class PlayerMenu extends AbstractSubMenu {
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.playerModelMenu = new PlayerModelMenu(this, "Ped Models")
-        this.addUserInputItem(this.customAnimationItem = new NativeUI.UIMenuItem("Play Custom Animation", "Requires ~b~dictionary~s~ and ~b~name~s~."), async () => await this.playAnimation(await Game.getUserInput(), await Game.getUserInput(), this.customAnimationItem))
-        this.addItem(this.revivePlayerItem = new NativeUI.UIMenuItem("Revive Player"), () => Player.respawn())
-        this.addItem(this.healPlayerItem = new NativeUI.UIMenuItem("Heal Player"), () => Player.heal())
-        this.addItem(this.playerInvisibilityItem = new NativeUI.UIMenuCheckboxItem("Player Invisibility"), (state?: boolean) => Player.setVisible(alt.Player.local, !state))
-        this.addItem(this.playerGodmodeItem = new NativeUI.UIMenuCheckboxItem("Player Godmode"), (state?: boolean) => Player.setInvincible(alt.Player.local, state))
-        this.addItem(this.noRagdollItem = new NativeUI.UIMenuCheckboxItem("No Ragdoll"), (state?: boolean) => game.setPedCanRagdoll(alt.Player.local.scriptID, !state))
-        this.addItem(this.superJumpItem = new NativeUI.UIMenuCheckboxItem("Super Jump"), (state?: boolean) => state ? tick.register("enableSuperJumpThisFrame", () => game.setSuperJumpThisFrame(alt.Player.local.scriptID), 0) : tick.clear("enableSuperJumpThisFrame"))
+        this.modelMenu = new ModelMenu(this, "Ped Models")
+        this.addUserInputItem(this.animationItem = new NativeUI.UIMenuItem("Play Custom Animation", "Requires ~b~dictionary~s~ and ~b~name~s~."), async () => await this.playAnimation(await Game.getUserInput(), await Game.getUserInput(), this.animationItem))
+        this.addItem(this.reviveItem = new NativeUI.UIMenuItem("Revive Player"), () => Player.respawn())
+        this.addItem(this.healItem = new NativeUI.UIMenuItem("Heal Player"), () => Player.heal())
+        this.addItem(this.invisibilityItem = new NativeUI.UIMenuCheckboxItem("Player Invisibility"), (state?: boolean) => game.setEntityVisible(alt.Player.local.scriptID, !state, false))
+        this.addItem(this.godmodeItem = new NativeUI.UIMenuCheckboxItem("Player Godmode"), (state?: boolean) => Player.setInvincible(alt.Player.local, state))
+        this.addItem(this.ragdollItem = new NativeUI.UIMenuCheckboxItem("Disable Ragdoll"), (state?: boolean) => game.setPedCanRagdoll(alt.Player.local.scriptID, !state))
+        this.addItem(this.collisionItem = new NativeUI.UIMenuCheckboxItem("Disable Collision"), (state?: boolean) => game.setEntityCollision(alt.Player.local.scriptID, !state, true))
+        this.addItem(this.infiniteStaminaItem = new NativeUI.UIMenuCheckboxItem("Infinite Stamina"), (state?: boolean) => state ? tick.register("player:infiniteStamina", () => game.resetPlayerStamina(alt.Player.local.scriptID), 0) : tick.clear("player:infiniteStamina"))
+        this.addItem(this.superJumpItem = new NativeUI.UIMenuCheckboxItem("Super Jump"), (state?: boolean) => state ? tick.register("player:superJump", () => game.setSuperJumpThisFrame(alt.Player.local.scriptID), 0) : tick.clear("player:superJump"))
         this.addItem(this.fastRunItem = new NativeUI.UIMenuCheckboxItem("Fast Run"), (state?: boolean) => state ? game.setRunSprintMultiplierForPlayer(alt.Player.local.scriptID, 1.49) : game.setRunSprintMultiplierForPlayer(alt.Player.local.scriptID, 1))
         this.addItem(this.fastSwimItem = new NativeUI.UIMenuCheckboxItem("Fast Swim"), (state?: boolean) => state ? game.setSwimMultiplierForPlayer(alt.Player.local.scriptID, 1.49) : game.setSwimMultiplierForPlayer(alt.Player.local.scriptID, 1))
         this.addItem(this.thermalVisionItem = new NativeUI.UIMenuCheckboxItem("Thermal Vision"), (state?: boolean) => game.setSeethrough(state))
@@ -45,7 +48,7 @@ export default class PlayerMenu extends AbstractSubMenu {
             Menu.lockMenuItem(this.suicideItem)
             await Player.playAnimation(alt.Player.local, "mp_suicide", "pill")
             alt.setTimeout(() => {
-                Ped.kill(alt.Player.local)
+                game.setEntityHealth(alt.Player.local.scriptID, 0, 0)
                 Menu.unlockMenuItem(this.suicideItem)
             }, 3200)
         })
@@ -60,12 +63,12 @@ export default class PlayerMenu extends AbstractSubMenu {
     }
 }
 
-class PlayerModelMenu extends AbstractSubMenu {
-    customPlayerModelItem: NativeUI.UIMenuItem
+class ModelMenu extends AbstractSubMenu {
+    customItem: NativeUI.UIMenuItem
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.addUserInputItem(this.customPlayerModelItem = new NativeUI.UIMenuItem("Custom Player Model"), async () => Player.setModel(alt.hash(await Game.getUserInput())))
+        this.addUserInputItem(this.customItem = new NativeUI.UIMenuItem("Custom Player Model"), async () => Player.setModel(alt.hash(await Game.getUserInput())))
         Enum.getValues(PedHash).forEach(hash => this.addItem(new NativeUI.UIMenuItem(PedHash[+hash]), () => Player.setModel(+hash)))
     }
 }

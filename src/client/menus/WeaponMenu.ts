@@ -26,7 +26,7 @@ export default class WeaponMenu extends AbstractSubMenu {
         this.addUserInputItem(this.giveWeaponItem = new NativeUI.UIMenuItem("Give Weapon"), async () => Player.giveWeapon(alt.hash(await Game.getUserInput()), true))
         this.addUserInputItem(this.removeWeaponItem = new NativeUI.UIMenuItem("Remove Weapon"), async () => Player.removeWeapon(alt.hash(await Game.getUserInput())))
         this.addItem(this.giveAllWeaponsItem = new NativeUI.UIMenuItem("Give All Weapons"), () => Enum.getValues(WeaponHash).forEach(weaponHash => Player.giveWeapon(+weaponHash)))
-        this.addItem(this.refillAmmoItem = new NativeUI.UIMenuItem("Refill Ammo"), () => Enum.getStringValues(AmmoType).forEach(type => game.setPedAmmoByType(alt.Player.local.scriptID, alt.hash(type), 250)))
+        this.addItem(this.refillAmmoItem = new NativeUI.UIMenuItem("Refill Ammo"), () => Enum.getValues(AmmoType).forEach(type => game.setPedAmmoByType(alt.Player.local.scriptID, +type, 250)))
         this.addItem(this.infiniteAmmoItem = new NativeUI.UIMenuCheckboxItem("Infinite Ammo"), (state?: boolean) => Enum.getValues(WeaponHash).forEach(weaponHash => game.setPedInfiniteAmmo(alt.Player.local.scriptID, state, +weaponHash)))
         this.addItem(this.noReloadItem = new NativeUI.UIMenuCheckboxItem("No Reload"), (state?: boolean) => game.setPedInfiniteAmmoClip(alt.Player.local.scriptID, state))
         this.addItem(this.removeAllWeaponsItem = new NativeUI.UIMenuItem("Remove All Weapons"), () => Player.removeAllWeapons())

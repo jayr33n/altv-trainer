@@ -1,6 +1,5 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import VehicleClass from "../enums/VehicleClass"
 import network from "../modules/Network"
 import VehicleSeat from "../enums/VehicleSeat"
 import Entity from "./Entity"
@@ -19,20 +18,20 @@ export default class Vehicle extends Entity {
     }
 
     static async setColor(vehicle: alt.Vehicle, type: number, color: VehicleColor) {
-        await network.callback("setVehicleColor", [vehicle, type, color])
+        await network.callback("vehicle:setColor", [vehicle, type, color])
     }
 
     static async setMod(vehicle: alt.Vehicle, mod: VehicleMod, index: number) {
-        await network.callback("setVehicleMod", [vehicle, mod, index])
+        await network.callback("vehicle:setMod", [vehicle, mod, index])
     }
 
     static async setWheels(vehicle: alt.Vehicle, wheelType: VehicleWheelType, index: number) {
-        await network.callback("setVehicleWheels", [vehicle, wheelType, index + 1])
+        await network.callback("vehicle:setWheels", [vehicle, wheelType, index + 1])
     }
 
     static async repair(vehicle: alt.Vehicle) {
         game.setVehicleFixed(vehicle.scriptID)
-        await network.callback("repairVehicle", [vehicle])
+        await network.callback("vehicle:repair", [vehicle])
     }
 
     static async create(hash: VehicleHash) {
@@ -40,11 +39,11 @@ export default class Vehicle extends Entity {
             Game.isCreatingVehicle = true
             if (alt.Player.local.vehicle)
                 await this.delete(alt.Player.local.vehicle)
-            let vehicle = await network.callback("spawnVehicle", [hash]) as alt.Vehicle
-            tick.register("setPedIntoVehicle", () => {
+            let vehicle = await network.callback("vehicle:create", [hash]) as alt.Vehicle
+            tick.register("vehicle:setPedInto", () => {
                 if (vehicle?.scriptID) {
                     game.setPedIntoVehicle(alt.Player.local.scriptID, vehicle.scriptID, VehicleSeat.Driver)
-                    tick.clear("setPedIntoVehicle")
+                    tick.clear("vehicle:setPedInto")
                     Game.isCreatingVehicle = false
                 }
             }, 50, 3000, () => Game.isCreatingVehicle = false)
@@ -52,14 +51,6 @@ export default class Vehicle extends Entity {
     }
 
     static async delete(vehicle: alt.Vehicle) {
-        await network.callback("destroyVehicle", [vehicle])
-    }
-
-    static getLocalizedClassName(vehicleClass: VehicleClass) {
-        return game.getLabelText("VEH_CLASS_" + vehicleClass)
-    }
-
-    static getLocalizedDisplayName(hash: number) {
-        return game.getLabelText(game.getDisplayNameFromVehicleModel(hash))
+        await network.callback("vehicle:delete", [vehicle])
     }
 }

@@ -1,7 +1,7 @@
 import * as alt from "alt-client"
 
 class Tick {
-    handlers: { [id: string]: number } = {}
+    private handlers: Record<string, number> = {}
 
     register(id: string, handler: () => void, miliseconds: number, timeout = -1, timeoutHandler = () => { }) {
         let handle = alt.setInterval(handler, miliseconds)

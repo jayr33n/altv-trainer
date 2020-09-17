@@ -10,31 +10,39 @@ export default class Game {
     static async loadAnimationDict(dict: string) {
         await new Promise((resolve) => {
             game.requestAnimDict(dict)
-            tick.register("loadAnimationDictionary", () => {
+            tick.register("game:loadAnim", () => {
                 if (game.hasAnimDictLoaded(dict)) {
                     resolve()
-                    tick.clear("loadAnimationDictionary")
+                    tick.clear("game:loadAnim")
                 }
             }, 50, 3000)
         })
-    }
-
-    static isModelValid(hash: number) {
-        return game.isModelInCdimage(hash) || game.isModelValid(hash) || game.isWeaponValid(hash) ? true : false
     }
 
     static async requestModel(hash: number) {
         await new Promise((resolve) => {
             if (this.isModelValid(hash)) {
                 game.requestModel(hash)
-                tick.register("requestModel", () => {
+                tick.register("game:requestModel", () => {
                     if (game.hasModelLoaded(hash)) {
                         resolve()
-                        tick.clear("requestModel")
+                        tick.clear("game:requestModel")
                     }
                 }, 50, 3000)
             }
         })
+    }
+
+    static async getUserInput(length = 30) {
+        game.displayOnscreenKeyboard(6, "FMMC_KEY_TIP8", "", "", "", "", "", length)
+        return await new Promise((resolve) => {
+            tick.register("player:awaitInput", () => {
+                if (game.updateOnscreenKeyboard() != 0) {
+                    resolve(game.getOnscreenKeyboardResult())
+                    tick.clear("player:awaitInput")
+                }
+            }, 0)
+        }) as string
     }
 
     static async createProp(model: number, position: alt.Vector3, dynamic: boolean) {
@@ -43,32 +51,28 @@ export default class Game {
         game.createObject(model, position.x, position.y, position.z, true, true, dynamic)
     }
 
-    static async getUserInput(length = 30) {
-        game.displayOnscreenKeyboard(6, "FMMC_KEY_TIP8", "", "", "", "", "", length)
-        return await new Promise((resolve) => {
-            tick.register("awaitUserInput", () => {
-                if (game.updateOnscreenKeyboard() != 0) {
-                    resolve(game.getOnscreenKeyboardResult())
-                    tick.clear("awaitUserInput")
-                }
-            }, 0)
-        }) as string
+    static isModelValid(hash: number) {
+        return game.isModelInCdimage(hash) || game.isModelValid(hash) || game.isWeaponValid(hash) ? true : false
+    }
+
+    static getDistanceBetweenCoords(from: alt.Vector3, to: alt.Vector3) {
+        return game.getDistanceBetweenCoords(from.x, from.y, from.z, to.x, to.y, to.z, true)
     }
 
     static async setTime(hours: number, minutes: number, seconds: number) {
-        await network.callback("setWorldTime", [hours, minutes, seconds])
+        await network.callback("game:setTime", [hours, minutes, seconds])
     }
 
     static async setWeather(weather: Weather) {
-        await network.callback("setWorldWeather", [weather])
+        await network.callback("game:setWeather", [weather])
     }
 
     static async setCloudHat(cloudHat: string) {
-        await network.callback("setWorldCloudHat", [cloudHat])
+        await network.callback("game:setCloudHat", [cloudHat])
     }
 
     static async setCloudHatOpacity(opacity: number) {
-        network.callback("setWorldCloudHatOpacity", [opacity])
+        await network.callback("game:setCloudHatOpacity", [opacity])
     }
 
     static getCurrentWeather() {

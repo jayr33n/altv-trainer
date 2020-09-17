@@ -23,16 +23,16 @@ export default class VehicleColorMenu extends AbstractSubMenu {
 }
 
 class ColorMenu extends AbstractSubMenu {
-    private colorType: number
+    private type: number
 
-    constructor(parentMenu: AbstractMenu, title: string, colorType: number) {
+    constructor(parentMenu: AbstractMenu, title: string, type: number) {
         super(parentMenu, title)
-        this.colorType = colorType
-        this.menuObject.MenuOpen.on(() => Menu.selectItem(this.menuObject.MenuItems.find(item => item.Text.replace(/\s+/g, '') == VehicleColor[Vehicle.getColors(VehicleMenu.vehicle)[this.colorType]]), NativeUI.BadgeStyle.Car))
+        this.type = type
+        this.menuObject.MenuOpen.on(() => Menu.selectItem(this.menuObject.MenuItems.find(item => item.Text.replace(/\s+/g, '') == VehicleColor[Vehicle.getColors(VehicleMenu.vehicle)[this.type]]), NativeUI.BadgeStyle.Car))
         Enum.getValues(VehicleColor).forEach(color => {
             let item = new NativeUI.UIMenuItem(VehicleColor[+color].replace(/([A-Z])/g, ' $1').trim())
             this.addItem(item, () => {
-                Vehicle.setColor(VehicleMenu.vehicle, this.colorType, +color)
+                Vehicle.setColor(VehicleMenu.vehicle, this.type, +color)
                 Menu.selectItem(item, NativeUI.BadgeStyle.Car)
             })
         })

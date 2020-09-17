@@ -1,3 +1,3 @@
-import events from "./modules/Events"
+import callbacks from "./modules/Callbacks"
 
-events.init()
+callbacks.init()

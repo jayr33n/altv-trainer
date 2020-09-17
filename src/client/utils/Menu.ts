@@ -17,13 +17,13 @@ export default class Menu {
             menuItem.Enabled = false
     }
 
-    static lockMenuItems(menu: NativeUI.Menu) {
-        menu.MenuItems.forEach(item => this.lockMenuItem(item))
-    }
-
     static unlockMenuItem(menuItem: NativeUI.UIMenuItem) {
         if (menuItem)
             menuItem.Enabled = true
+    }
+
+    static lockMenuItems(menu: NativeUI.Menu) {
+        menu.MenuItems.forEach(item => this.lockMenuItem(item))
     }
 
     static unlockMenuItems(menu: NativeUI.Menu) {
