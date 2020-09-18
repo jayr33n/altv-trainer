@@ -1,9 +1,13 @@
 # altv-trainer
-**altv-trainer** is a general-purpose menu built on [NativeUI](https://github.com/DurtyFree/alt-V-NativeUI) designed for [alt:V](https://altv.mp/#/). It includes many options to help you debug your scripts or just mess around with your friends.  
-![menu-1](https://media.giphy.com/media/yqExJWTkwqzFxxTc9k/giphy.gif)
-![menu-2](https://media.giphy.com/media/CZwLyf7vwp7gDTwY5f/giphy.gif)
+**altv-trainer** is a general-purpose menu built on [NativeUI](https://github.com/DurtyFree/alt-V-NativeUI) designed for [alt:V](https://altv.mp/#/). It includes many options to help you debug your scripts or just mess around with your friends. It is **not** supposed to be an admin menu `(for now)`.
+
+## Demos
+![](https://github.com/Jayreen58/altv-trainer/blob/master/assets/demo1.gif)  
+![](https://github.com/Jayreen58/altv-trainer/blob/master/assets/demo2.gif)  
+![](https://github.com/Jayreen58/altv-trainer/blob/master/assets/demo3.gif) 
 
 ## Installing
+**altv-trainer** was developed and tested on `release build #1286`
 
 ## Contribute
 
