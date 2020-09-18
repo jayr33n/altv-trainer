@@ -1,8 +1,8 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import AbstractText from "./AbstractText"
-import Font from "../enums/Font"
-import Game from "../utils/Game"
+import AbstractText from "./abstractText"
+import Font from "../enums/font"
+import Game from "../utils/game"
 
 export default class Text3D extends AbstractText {
     position: alt.Vector3

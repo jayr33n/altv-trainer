@@ -1,8 +1,8 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import Weather from "../enums/Weather"
-import tick from "../modules/Tick"
-import network from "../modules/Network"
+import Weather from "../enums/weather"
+import tick from "../modules/tick"
+import network from "../modules/network"
 
 export default class Game {
     static isCreatingVehicle = false
@@ -119,6 +119,8 @@ export default class Game {
                 return Weather.Xmas
             case 0xC91A3202:
                 return Weather.Halloween
+            default:
+                return 0
         }
     }
 }

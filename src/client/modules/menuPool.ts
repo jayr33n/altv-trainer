@@ -1,7 +1,7 @@
 import * as alt from "alt-client"
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import MainMenu from "../menus/MainMenu"
-import Key from "../enums/Key"
+import MainMenu from "../menus/mainMenu"
+import Key from "../enums/key"
 
 class MenuPool {
     private menus: NativeUI.Menu[] = []

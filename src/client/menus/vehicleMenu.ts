@@ -1,12 +1,12 @@
 import * as alt from "alt-client"
 import * as game from "natives"
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractSubMenu from "./AbstractSubMenu"
-import VehicleCustomizationMenu from "./VehicleCustomizationMenu"
-import AbstractMenu from "./AbstractMenu"
-import Vehicle from "../utils/Vehicle"
-import tick from "../modules/Tick"
-import Menu from "../utils/Menu"
+import AbstractSubMenu from "./abstractSubMenu"
+import VehicleCustomizationMenu from "./vehicleCustomizationMenu"
+import AbstractMenu from "./abstractMenu"
+import Vehicle from "../utils/vehicle"
+import tick from "../modules/tick"
+import Menu from "../utils/menu"
 
 export default class VehicleMenu extends AbstractSubMenu {
     static vehicle: alt.Vehicle
@@ -25,10 +25,10 @@ export default class VehicleMenu extends AbstractSubMenu {
         super(parentMenu, title)
         this.vehicleCustomizationMenu = new VehicleCustomizationMenu(this, "Vehicle Customization")
         this.addItem(this.repairItem = new NativeUI.UIMenuItem("Repair Vehicle"), () => Vehicle.repair(VehicleMenu.vehicle))
-        this.addItem(this.repairItem = new NativeUI.UIMenuItem("Clean Vehicle"), () => Vehicle.clean(VehicleMenu.vehicle))
+        this.addItem(this.cleanItem = new NativeUI.UIMenuItem("Clean Vehicle"), () => Vehicle.clean(VehicleMenu.vehicle))
         this.addItem(this.engineTorqueItem = new NativeUI.UIMenuCheckboxItem("Enable Torque Multiplier"), (state?: boolean) =>
             state ? tick.register("vehicle:torqueMultiplier", () => game.setVehicleCheatPowerIncrease(alt.Player.local.vehicle?.scriptID, this.multiplier), 0) : tick.clear("vehicle:torqueMultiplier"))
-        this.addItem(this.torqueMultiplierItem = new NativeUI.UIMenuDynamicListItem("Engine Torque Multiplier", (item: NativeUI.UIMenuDynamicListItem, value: string, direction: NativeUI.ChangeDirection) => {
+        this.addItem(this.torqueMultiplierItem = new NativeUI.UIMenuDynamicListItem("Engine Torque Multiplier", (_, value: string, direction: NativeUI.ChangeDirection) => {
             direction == NativeUI.ChangeDirection.Right ? this.multiplier = +value + 5 : this.multiplier = +value - 5
             return `${this.multiplier.toFixed(2)}`
         }, undefined, () => `${this.multiplier.toFixed(2)}`))

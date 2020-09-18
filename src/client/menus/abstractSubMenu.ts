@@ -1,6 +1,6 @@
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractMenu from "./AbstractMenu"
-import menuPool from "../modules/MenuPool"
+import AbstractMenu from "./abstractMenu"
+import menuPool from "../modules/menuPool"
 
 export default abstract class AbstractSubMenu extends AbstractMenu {
     parentMenu: AbstractMenu

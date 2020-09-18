@@ -1,14 +1,14 @@
 import * as game from "natives"
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractMenu from "./AbstractMenu"
-import AbstractSubMenu from "./AbstractSubMenu"
-import Enum from "../utils/Enum"
-import Game from "../utils/Game"
-import Weather from "../enums/Weather"
-import Menu from "../utils/Menu"
-import CloudHat from "../enums/CloudHat"
-import TimeCycleModifier from "../enums/TimeCycleModifier"
-import tick from "../modules/Tick"
+import AbstractMenu from "./abstractMenu"
+import AbstractSubMenu from "./abstractSubMenu"
+import Enum from "../utils/enum"
+import Game from "../utils/game"
+import Weather from "../enums/weather"
+import Menu from "../utils/menu"
+import CloudHat from "../enums/cloudHat"
+import TimeCycleModifier from "../enums/timeCycleModifier"
+import tick from "../modules/tick"
 
 export default class WorldMenu extends AbstractSubMenu {
     private gameClockItem: NativeUI.UIMenuListItem

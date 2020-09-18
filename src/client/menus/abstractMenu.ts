@@ -1,5 +1,5 @@
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import menuPool from "../modules/MenuPool"
+import menuPool from "../modules/menuPool"
 
 export default abstract class AbstractMenu {
     menuObject: NativeUI.Menu

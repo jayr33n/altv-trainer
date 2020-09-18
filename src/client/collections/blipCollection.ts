@@ -1,4 +1,4 @@
-import Blip from "../common/Blip"
+import Blip from "../common/blip"
 
 export default class BlipCollection {
     private blips: Record<number, Blip> = {}

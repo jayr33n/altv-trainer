@@ -1,12 +1,12 @@
 import * as alt from "alt-client"
 import * as game from "natives"
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import WeaponCollection from "../collections/WeaponCollection"
-import AbstractSubMenu from "./AbstractSubMenu"
-import AbstractMenu from "./AbstractMenu"
-import Menu from "../utils/Menu"
-import Weapon from "../utils/Weapon"
-import WeaponComponentCollection from "../collections/WeaponComponentCollection"
+import WeaponCollection from "../collections/weaponCollection"
+import AbstractSubMenu from "./abstractSubMenu"
+import AbstractMenu from "./abstractMenu"
+import Menu from "../utils/menu"
+import WeaponComponentCollection from "../collections/weaponComponentCollection"
+import Player from "../utils/player"
 
 export default class WeaponCustomizationMenu extends AbstractSubMenu {
     static componentCollection: WeaponComponentCollection
@@ -30,7 +30,7 @@ export default class WeaponCustomizationMenu extends AbstractSubMenu {
                 let item = new NativeUI.UIMenuItem(game.getLabelText(component.name), game.getLabelText(component.description) == "NULL" ? "" : game.getLabelText(component.description))
                 this.addItem(item, async () => {
                     let hasComponent = game.hasPedGotWeaponComponent(alt.Player.local.scriptID, weaponHash, alt.hash(component.key))
-                    hasComponent ? await Weapon.removeComponent(weaponHash, alt.hash(component.key)) : await Weapon.addComponent(weaponHash, alt.hash(component.key))
+                    hasComponent ? await Player.removeWeaponComponent(weaponHash, alt.hash(component.key)) : await Player.addWeaponComponent(weaponHash, alt.hash(component.key))
                     this.toggleItem(item, hasComponent)
                 })
             })

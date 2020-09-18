@@ -1,14 +1,14 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import network from "../modules/Network"
-import VehicleSeat from "../enums/VehicleSeat"
-import Entity from "./Entity"
-import VehicleColor from "../enums/VehicleColor"
-import VehicleMod from "../enums/VehicleMod"
-import VehicleHash from "../enums/VehicleHash"
-import VehicleWheelType from "../enums/VehicleWheelType"
-import tick from "../modules/Tick"
-import Game from "./Game"
+import network from "../modules/network"
+import VehicleSeat from "../enums/vehicleSeat"
+import Entity from "./entity"
+import VehicleColor from "../enums/vehicleColor"
+import VehicleMod from "../enums/vehicleMod"
+import VehicleHash from "../enums/vehicleHash"
+import VehicleWheelType from "../enums/vehicleWheelType"
+import tick from "../modules/tick"
+import Game from "./game"
 
 export default class Vehicle extends Entity {
     static getColors(vehicle: alt.Vehicle) {

@@ -1,5 +1,5 @@
 import * as alt from "alt-client"
-import Font from "../enums/Font"
+import Font from "../enums/font"
 
 export default abstract class AbstractText {
     text: string

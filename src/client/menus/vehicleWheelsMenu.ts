@@ -1,9 +1,9 @@
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractSubMenu from "./AbstractSubMenu"
-import AbstractMenu from "./AbstractMenu"
-import VehicleWheelType from "../enums/VehicleWheelType"
-import VehicleMenu from "./VehicleMenu"
-import Vehicle from "../utils/Vehicle"
+import AbstractSubMenu from "./abstractSubMenu"
+import AbstractMenu from "./abstractMenu"
+import VehicleWheelType from "../enums/vehicleWheelType"
+import VehicleMenu from "./vehicleMenu"
+import Vehicle from "../utils/vehicle"
 
 export default class VehicleWheelsMenu extends AbstractSubMenu {
     stockWheels: NativeUI.UIMenuItem

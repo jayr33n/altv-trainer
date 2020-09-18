@@ -1,4 +1,4 @@
-import WeaponHash from "../enums/WeaponHash"
+import WeaponHash from "../enums/weaponHash"
 
 interface WeaponObject {
     name: string

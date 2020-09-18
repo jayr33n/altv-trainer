@@ -1,14 +1,14 @@
 import * as alt from "alt-client"
 import * as game from "natives"
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractSubMenu from "./AbstractSubMenu"
-import AbstractMenu from "./AbstractMenu"
-import Game from "../utils/Game"
-import Enum from "../utils/Enum"
-import WeaponHash from "../enums/WeaponHash"
-import WeaponCustomizationMenu from "./WeaponCustomizationMenu"
-import Player from "../utils/Player"
-import AmmoType from "../enums/AmmoType"
+import AbstractSubMenu from "./abstractSubMenu"
+import AbstractMenu from "./abstractMenu"
+import Game from "../utils/game"
+import Enum from "../utils/enum"
+import WeaponHash from "../enums/weaponHash"
+import WeaponCustomizationMenu from "./weaponCustomizationMenu"
+import Player from "../utils/player"
+import AmmoType from "../enums/ammoType"
 
 export default class WeaponMenu extends AbstractSubMenu {
     private weaponCustomizationMenu: WeaponCustomizationMenu

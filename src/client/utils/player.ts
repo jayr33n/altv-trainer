@@ -1,11 +1,11 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import network from "../modules/Network"
-import PedHash from "../enums/PedHash"
-import WeaponHash from "../enums/WeaponHash"
-import Entity from "./Entity"
-import AnimationFlag from "../enums/AnimationFlag"
-import Game from "./Game"
+import network from "../modules/network"
+import PedHash from "../enums/pedHash"
+import WeaponHash from "../enums/weaponHash"
+import Entity from "./entity"
+import AnimationFlag from "../enums/animationFlag"
+import Game from "./game"
 
 export default class Player extends Entity {
     static async respawn() {
@@ -30,6 +30,14 @@ export default class Player extends Entity {
 
     static async removeAllWeapons() {
         await network.callback("player:removeAllWeapons")
+    }
+
+    static async addWeaponComponent(weapon: WeaponHash, component: number) {
+        await network.callback("player:addWeaponComponent", [weapon, component])
+    }
+
+    static async removeWeaponComponent(weapon: WeaponHash, component: number) {
+        await network.callback("player:removeWeaponComponent", [weapon, component])
     }
 
     static async playAnimation(dict: string, name: string, flag = AnimationFlag.Normal) {

@@ -1,14 +1,14 @@
 import * as alt from "alt-client"
 import * as game from "natives"
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractSubMenu from "./AbstractSubMenu"
-import VehicleHash from "../enums/VehicleHash"
-import Enum from "../utils/Enum"
-import VehicleClass from "../enums/VehicleClass"
-import Vehicle from "../utils/Vehicle"
-import AbstractMenu from "./AbstractMenu"
-import Menu from "../utils/Menu"
-import Game from "../utils/Game"
+import AbstractSubMenu from "./abstractSubMenu"
+import VehicleHash from "../enums/vehicleHash"
+import Enum from "../utils/enum"
+import VehicleClass from "../enums/vehicleClass"
+import Vehicle from "../utils/vehicle"
+import AbstractMenu from "./abstractMenu"
+import Menu from "../utils/menu"
+import Game from "../utils/game"
 
 export default class VehicleSpawnerMenu extends AbstractSubMenu {
     private customVehicleItem: NativeUI.UIMenuItem

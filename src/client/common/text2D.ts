@@ -1,7 +1,7 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import AbstractText from "./AbstractText"
-import Font from "../enums/Font"
+import AbstractText from "./abstractText"
+import Font from "../enums/font"
 
 export default class Text2D extends AbstractText {
     position: [number, number]

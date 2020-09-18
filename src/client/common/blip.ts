@@ -1,6 +1,6 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import BlipDisplayType from "../enums/BlipDisplayType"
+import BlipDisplayType from "../enums/blipDisplayType"
 
 // https://wiki.gtanet.work/index.php?title=Blips
 export default class Blip {
@@ -11,9 +11,9 @@ export default class Blip {
     private _display: BlipDisplayType
     private _isShortRange: boolean
     private _isHeadingEnabled: boolean
-    handle: number
     position: alt.Vector3
     attachedTo: alt.Entity
+    handle: number
 
     constructor(name: string, sprite: number, scale: number, color: number, display: BlipDisplayType, isShortRange: boolean, isHeadingEnabled: boolean, position: alt.Vector3, attachedTo: alt.Entity) {
         if (attachedTo) {

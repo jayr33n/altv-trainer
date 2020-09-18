@@ -1,11 +1,11 @@
-import AbstractMenu from "./AbstractMenu"
-import VehicleMenu from "./VehicleMenu"
-import PlayerMenu from "./PlayerMenu"
-import WorldMenu from "./WorldMenu"
-import OnlineMenu from "./OnlineMenu"
-import WeaponMenu from "./WeaponMenu"
-import VehicleSpawnerMenu from "./VehicleSpawnerMenu"
-import MiscMenu from "./MiscMenu"
+import AbstractMenu from "./abstractMenu"
+import VehicleMenu from "./vehicleMenu"
+import PlayerMenu from "./playerMenu"
+import WorldMenu from "./worldMenu"
+import OnlineMenu from "./onlineMenu"
+import WeaponMenu from "./weaponMenu"
+import VehicleSpawnerMenu from "./vehicleSpawnerMenu"
+import MiscMenu from "./miscMenu"
 
 export default class MainMenu extends AbstractMenu {
     private onlineMenu: OnlineMenu

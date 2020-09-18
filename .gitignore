@@ -122,7 +122,6 @@ dist
 # Ignore all local history of files
 .history
 
-# Output files
 out/
 src/client/include/*
 !.gitkeep

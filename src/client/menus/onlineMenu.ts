@@ -1,8 +1,8 @@
 import * as alt from "alt-client"
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractSubMenu from "./AbstractSubMenu"
-import AbstractMenu from "./AbstractMenu"
-import Game from "../utils/Game"
+import AbstractSubMenu from "./abstractSubMenu"
+import AbstractMenu from "./abstractMenu"
+import Game from "../utils/game"
 
 export default class OnlineMenu extends AbstractSubMenu {
     static spectatingPlayer: alt.Player

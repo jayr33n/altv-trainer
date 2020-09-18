@@ -1,6 +1,6 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import VehicleSeat from "../enums/VehicleSeat"
+import VehicleSeat from "../enums/vehicleSeat"
 
 class Network {
     private callbackID = 0

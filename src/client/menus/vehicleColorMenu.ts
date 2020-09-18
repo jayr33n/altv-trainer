@@ -1,11 +1,11 @@
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractSubMenu from "./AbstractSubMenu"
-import AbstractMenu from "./AbstractMenu"
-import Enum from "../utils/Enum"
-import VehicleColor from "../enums/VehicleColor"
-import Vehicle from "../utils/Vehicle"
-import VehicleMenu from "./VehicleMenu"
-import Menu from "../utils/Menu"
+import AbstractSubMenu from "./abstractSubMenu"
+import AbstractMenu from "./abstractMenu"
+import Enum from "../utils/enum"
+import VehicleColor from "../enums/vehicleColor"
+import Vehicle from "../utils/vehicle"
+import VehicleMenu from "./vehicleMenu"
+import Menu from "../utils/menu"
 
 export default class VehicleColorMenu extends AbstractSubMenu {
     private primaryColorMenu: ColorMenu

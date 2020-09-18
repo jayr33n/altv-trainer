@@ -1,17 +1,17 @@
 import * as alt from "alt-client"
 import * as game from "natives"
 import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractSubMenu from "./AbstractSubMenu"
-import AbstractMenu from "./AbstractMenu"
-import tick from "../modules/Tick"
-import Text2D from "../common/Text2D"
-import Font from "../enums/Font"
-import Game from "../utils/Game"
-import Key from "../enums/Key"
-import Player from "../utils/Player"
-import Enum from "../utils/Enum"
-import HudComponent from "../enums/HudComponent"
-import Text3D from "../common/Text3D"
+import AbstractSubMenu from "./abstractSubMenu"
+import AbstractMenu from "./abstractMenu"
+import tick from "../modules/tick"
+import Text2D from "../common/text2D"
+import Font from "../enums/font"
+import Game from "../utils/game"
+import Key from "../enums/key"
+import Player from "../utils/player"
+import Enum from "../utils/enum"
+import HudComponent from "../enums/hudComponent"
+import Text3D from "../common/text3D"
 
 export default class MiscMenu extends AbstractSubMenu {
     private customPropItem: NativeUI.UIMenuItem
@@ -93,6 +93,6 @@ export default class MiscMenu extends AbstractSubMenu {
     }
 
     private draw3DText(text: string, entity: alt.Entity) {
-        new Text3D(text, null, 0.06, Font.ChaletComprimeCologne, new alt.RGBA(255, 255, 255, 220), entity).drawThisFrame()
+        new Text3D(text, undefined, 0.06, Font.ChaletComprimeCologne, new alt.RGBA(255, 255, 255, 220), entity).drawThisFrame()
     }
 }
