@@ -20,7 +20,7 @@ export default [{
     input: 'src/server/server.ts',
     output: {
         dir: 'out',
-        format: 'cjs',
+        format: 'es',
         sourcemap: 'true'
     },
     external: ["alt-server"],
