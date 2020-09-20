@@ -7,7 +7,7 @@ export default [{
     output: {
         dir: 'out',
         format: 'es',
-        sourcemap: 'true',
+        sourcemap: 'true'
     },
     external: ["alt-client", "natives"],
     plugins: [
@@ -21,7 +21,7 @@ export default [{
     output: {
         dir: 'out',
         format: 'cjs',
-        sourcemap: 'true',
+        sourcemap: 'true'
     },
     external: ["alt-server"],
     plugins: [

@@ -222,7 +222,6 @@ export class WeaponComponentCollection {
             { key: "component_carbinerifle_clip_02", name: "wct_clip2", description: "wcd_cr_clip2" },
             { key: "component_carbinerifle_clip_03", name: "wct_clip_box", description: "wcd_clip3" },
             { key: "component_at_ar_flsh", name: "wct_flash", description: "wcd_flash" },
-            { key: "component_at_railcover_01", name: "wct_rail", description: "wcd_at_rail" },
             { key: "component_at_scope_medium", name: "wct_scope_med", description: "wcd_scope_med" },
             { key: "component_at_ar_supp", name: "wct_supp", description: "wcd_ar_supp" },
             { key: "component_at_ar_afgrip", name: "wct_grip", description: "wcd_grip" },
