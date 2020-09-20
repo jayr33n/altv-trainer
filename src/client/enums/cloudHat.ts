@@ -1,5 +1,5 @@
 // https://runtime.fivem.net/doc/natives/?_0xFC4842A34657BFCB
-enum CloudHat {
+export enum CloudHat {
     Altostratus = "altostratus",
     Cirrus = "Cirrus",
     Cirrocumulus = "cirrocumulus",
@@ -21,5 +21,3 @@ enum CloudHat {
     Shower = "shower",
     Wispy = "Wispy"
 }
-
-export default CloudHat

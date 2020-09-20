@@ -1,5 +1,5 @@
 // https://wiki.rage.mp/index.php?title=Vehicle_Mods
-enum VehicleMod {
+export enum VehicleMod {
     Spoiler,
     FrontBumpers,
     RearBumper,
@@ -43,5 +43,3 @@ enum VehicleMod {
     Details,
     Livery = 48
 }
-
-export default VehicleMod

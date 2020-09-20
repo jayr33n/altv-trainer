@@ -1,9 +1,9 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import AbstractText from "./abstractText"
-import Font from "../enums/font"
+import { Font } from "../enums/font"
+import { AbstractText } from "./abstractText"
 
-export default class Text2D extends AbstractText {
+export class Text2D extends AbstractText {
     position: [number, number]
     centre: boolean
 

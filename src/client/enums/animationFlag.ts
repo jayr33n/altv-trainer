@@ -1,5 +1,5 @@
 // https://runtime.fivem.net/doc/natives/?_0xEA47FE3719165B94
-enum AnimationFlag {
+export enum AnimationFlag {
     Normal = 0,
     Repeat = 1,
     StopLastFrame = 2,
@@ -7,5 +7,3 @@ enum AnimationFlag {
     EnablePlayerControl = 32,
     Cancelable = 120
 }
-
-export default AnimationFlag

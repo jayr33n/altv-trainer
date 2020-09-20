@@ -1,5 +1,5 @@
 // https://wiki.rage.mp/index.php?title=Vehicle::setWheelType
-enum VehicleWheelType {
+export enum VehicleWheelType {
     Stock = -1,
     Sport,
     Muscle,
@@ -14,5 +14,3 @@ enum VehicleWheelType {
     Race,
     Street
 }
-
-export default VehicleWheelType

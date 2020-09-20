@@ -1,30 +1,20 @@
 import * as alt from "alt-client"
-import * as NativeUI from "../include/NativeUI/NativeUi"
-import MainMenu from "../menus/mainMenu"
-import Key from "../enums/key"
+import * as ui from "@durtyfree/altv-nativeui"
+import { Key } from "../enums/key"
+import { MainMenu } from "../menus/mainMenu"
 
-class MenuPool {
-    private menus: NativeUI.Menu[] = []
+export abstract class AbstractMenuPool {
+    protected menus: ui.Menu[] = []
 
-    init() {
-        let mainMenu = new MainMenu("Main Menu")
-        alt.on("keyup", (key: number) => {
-            if (key == Key.M) {
-                if (!this.isAnyMenuOpen())
-                    mainMenu.menuObject.Open()
-            }
-        })
+    add(menu: ui.Menu) {
+        this.menus.push(menu)
     }
 
-    add(menu: NativeUI.Menu) {
-        menuPool.menus.push(menu)
+    remove(menu: ui.Menu) {
+        this.menus = this.menus.filter(x => x !== menu)
     }
 
-    remove(menu: NativeUI.Menu) {
-        menuPool.menus = menuPool.menus.filter(x => x !== menu)
-    }
-
-    private isAnyMenuOpen() {
+    protected isAnyMenuOpen() {
         let result = false
         this.menus.forEach(menu => {
             if (menu.Visible)
@@ -34,5 +24,16 @@ class MenuPool {
     }
 }
 
-const menuPool = new MenuPool()
-export default menuPool
+class MenuPool extends AbstractMenuPool {
+    init() {
+        let mainMenu = new MainMenu(this, "Main Menu")
+        alt.on("keyup", (key: number) => {
+            if (key == Key.M) {
+                if (!this.isAnyMenuOpen())
+                    mainMenu.menuObject.Open()
+            }
+        })
+    }
+}
+
+export const menuPool = new MenuPool()

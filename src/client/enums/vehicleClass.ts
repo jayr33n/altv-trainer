@@ -1,4 +1,4 @@
-enum VehicleClass {
+export enum VehicleClass {
     Compacts,
     Sedans,
     SUVs,
@@ -23,5 +23,3 @@ enum VehicleClass {
     Trains,
     OpenWheel
 }
-
-export default VehicleClass

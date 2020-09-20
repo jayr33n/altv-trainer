@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "altv-trainer",
   "version": "1.0.0",
   "description": "",
@@ -15,10 +14,17 @@
   },
   "homepage": "https://github.com/Jayreen58/altv-trainer#readme",
   "devDependencies": {
-    "@altv/types-client": "^1.1.0",
+    "@altv/types-client": "^1.1.1",
     "@altv/types-natives": "^1.1.0",
-    "@altv/types-server": "^1.4.1",
-    "@altv/types-webview": "^1.0.2"
+    "@altv/types-server": "^1.4.4",
+    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@rollup/plugin-typescript": "^6.0.0",
+    "rollup": "^2.27.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@durtyfree/altv-nativeui": "^1.4.4"
+  }
 }

@@ -1,5 +1,5 @@
 // https://gist.github.com/root-cause/faf41f59f7a6d818b7db0b839bd147c1
-enum AmmoType {
+export enum AmmoType {
     AMMO_PISTOL = 0x743D4F54,
     AMMO_SMG = 0x6C7D23B8,
     AMMO_RIFLE = 0xD05319F,
@@ -61,5 +61,3 @@ enum AmmoType {
     AMMO_FIREWORK = 0xAF23EE0F,
     AMMO_RAILGUN = 0x794446FD
 }
-
-export default AmmoType

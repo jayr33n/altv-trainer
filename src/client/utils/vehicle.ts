@@ -1,16 +1,16 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import network from "../modules/network"
-import VehicleSeat from "../enums/vehicleSeat"
-import Entity from "./entity"
-import VehicleColor from "../enums/vehicleColor"
-import VehicleMod from "../enums/vehicleMod"
-import VehicleHash from "../enums/vehicleHash"
-import VehicleWheelType from "../enums/vehicleWheelType"
-import tick from "../modules/tick"
-import Game from "./game"
+import { VehicleColor } from "../enums/vehicleColor"
+import { VehicleHash } from "../enums/vehicleHash"
+import { VehicleMod } from "../enums/vehicleMod"
+import { VehicleSeat } from "../enums/vehicleSeat"
+import { VehicleWheelType } from "../enums/vehicleWheelType"
+import { network } from "../modules/network"
+import { tick } from "../modules/tick"
+import { Entity } from "./entity"
+import { Game } from "./game"
 
-export default class Vehicle extends Entity {
+export class Vehicle extends Entity {
     static getColors(vehicle: alt.Vehicle) {
         let colors = game.getVehicleColours(vehicle.scriptID, 0, 0)
         let extra = game.getVehicleExtraColours(vehicle.scriptID, 0, 0)
@@ -25,8 +25,8 @@ export default class Vehicle extends Entity {
         await network.callback("vehicle:setMod", [vehicle, mod, index])
     }
 
-    static async setWheels(vehicle: alt.Vehicle, wheelType: VehicleWheelType, index: number) {
-        await network.callback("vehicle:setWheels", [vehicle, wheelType, index + 1])
+    static async setWheels(vehicle: alt.Vehicle, wheelType: VehicleWheelType, index: number, isBike: boolean) {
+        await network.callback("vehicle:setWheels", [vehicle, wheelType, index + 1, isBike])
     }
 
     static async repair(vehicle: alt.Vehicle) {

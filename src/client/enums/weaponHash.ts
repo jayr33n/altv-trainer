@@ -1,5 +1,5 @@
 // https://wiki.rage.mp/index.php?title=Weapons
-enum WeaponHash {
+export enum WeaponHash {
     Dagger = 0x92a27487,
     Bat = 0x958a4a8f,
     Bottle = 0xf9e6aa4b,
@@ -96,5 +96,3 @@ enum WeaponHash {
     Parachute = 0xfbab5776,
     HazardousJerryCan = 0xba536372
 }
-
-export default WeaponHash

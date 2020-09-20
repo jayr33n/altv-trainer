@@ -1,4 +1,4 @@
-export default class Enum {
+export class Enum {
     static getKeys(e: { [id: number]: string }) {
         return Object.keys(e).filter(k => typeof e[k as any] === "number")
     }

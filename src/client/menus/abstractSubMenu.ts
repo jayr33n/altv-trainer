@@ -1,15 +1,14 @@
-import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractMenu from "./abstractMenu"
-import menuPool from "../modules/menuPool"
+import * as ui from "@durtyfree/altv-nativeui"
+import { AbstractMenu } from "./abstractMenu"
 
-export default abstract class AbstractSubMenu extends AbstractMenu {
+export abstract class AbstractSubMenu extends AbstractMenu {
     parentMenu: AbstractMenu
-    menuItem: NativeUI.UIMenuItem
+    menuItem: ui.UIMenuItem
 
     protected constructor(parentMenu: AbstractMenu, title: string) {
-        super(title)
+        super(parentMenu.pool, title)
         this.parentMenu = parentMenu
-        this.menuItem = new NativeUI.UIMenuItem(title)
+        this.menuItem = new ui.UIMenuItem(title)
         this.menuItem.RightLabel = "→→→"
         this.parentMenu.addItem(this.menuItem)
         this.parentMenu.menuObject.AddSubMenu(this.menuObject, this.menuItem)
@@ -17,6 +16,6 @@ export default abstract class AbstractSubMenu extends AbstractMenu {
 
     protected remove() {
         this.parentMenu.menuObject.RemoveItem(this.menuItem)
-        menuPool.remove(this.menuObject)
+        this.pool.remove(this.menuObject)
     }
 }

@@ -1,6 +1,6 @@
-import Blip from "../common/blip"
+import { Blip } from "../common/blip"
 
-export default class BlipCollection {
+export class BlipCollection {
     private blips: Record<number, Blip> = {}
 
     add(id: number, blip: Blip) {

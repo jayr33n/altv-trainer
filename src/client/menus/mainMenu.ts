@@ -1,13 +1,15 @@
-import AbstractMenu from "./abstractMenu"
-import VehicleMenu from "./vehicleMenu"
-import PlayerMenu from "./playerMenu"
-import WorldMenu from "./worldMenu"
-import OnlineMenu from "./onlineMenu"
-import WeaponMenu from "./weaponMenu"
-import VehicleSpawnerMenu from "./vehicleSpawnerMenu"
-import MiscMenu from "./miscMenu"
+import { AbstractMenuPool } from "../modules/menuPool"
+import { AbstractMenu } from "./abstractMenu"
+import { MiscMenu } from "./miscMenu"
+import { OnlineMenu } from "./onlineMenu"
+import { PlayerMenu } from "./playerMenu"
+import { VehicleMenu } from "./vehicleMenu"
+import { VehicleSpawnerMenu } from "./vehicleSpawnerMenu"
+import { WeaponMenu } from "./weaponMenu"
+import { WorldMenu } from "./worldMenu"
 
-export default class MainMenu extends AbstractMenu {
+
+export class MainMenu extends AbstractMenu {
     private onlineMenu: OnlineMenu
     private playerMenu: PlayerMenu
     private vehicleMenu: VehicleMenu
@@ -16,8 +18,8 @@ export default class MainMenu extends AbstractMenu {
     private WorldMenu: WorldMenu
     private miscMenu: MiscMenu
 
-    constructor(title: string) {
-        super(title)
+    constructor(pool: AbstractMenuPool, title: string) {
+        super(pool, title)
         this.onlineMenu = new OnlineMenu(this, "Online Options")
         this.playerMenu = new PlayerMenu(this, "Player Options")
         this.vehicleMenu = new VehicleMenu(this, "Vehicle Options")

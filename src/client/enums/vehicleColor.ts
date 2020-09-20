@@ -1,5 +1,5 @@
 // https://github.com/citizenfx/fivem/blob/617c7e92fde50e352f97593cbf556037e1ddc6dc/code/client/clrcore/External/Vehicle.cs#L57
-enum VehicleColor {
+export enum VehicleColor {
     MetallicBlack,
     MetallicGraphiteBlack,
     MetallicBlackSteel,
@@ -159,5 +159,3 @@ enum VehicleColor {
     PureGold,
     BrushedGold
 }
-
-export default VehicleColor

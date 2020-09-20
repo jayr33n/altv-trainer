@@ -29,7 +29,8 @@ class Callbacks {
                 let vehicle = args[0] as alt.Vehicle
                 vehicle.modKit = 1
                 vehicle.setWheels(args[1], args[2])
-                vehicle.setRearWheels(args[2])
+                if (args[3])
+                    vehicle.setRearWheels(args[2])
             } catch (error) { alt.logError(error) }
         }
         this.callbacks["vehicle:delete"] = (_, args) => {
@@ -112,5 +113,4 @@ class Callbacks {
     }
 }
 
-const callbacks = new Callbacks()
-export default callbacks
+export const callbacks = new Callbacks()

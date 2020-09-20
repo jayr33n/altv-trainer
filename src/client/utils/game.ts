@@ -1,10 +1,10 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import Weather from "../enums/weather"
-import tick from "../modules/tick"
-import network from "../modules/network"
+import { Weather } from "../enums/weather"
+import { network } from "../modules/network"
+import { tick } from "../modules/tick"
 
-export default class Game {
+export class Game {
     static isCreatingVehicle = false
 
     static async loadAnimationDict(dict: string) {

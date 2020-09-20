@@ -1,4 +1,4 @@
-import WeaponHash from "../enums/weaponHash"
+import { WeaponHash } from "../enums/weaponHash"
 
 interface WeaponObject {
     name: string
@@ -6,7 +6,7 @@ interface WeaponObject {
 }
 
 // https://gist.github.com/root-cause/3f29d38179b12245a003fb4fff615335
-export default class WeaponCollection {
+export class WeaponCollection {
     weapons: Record<number, WeaponObject> = {}
 
     constructor() {

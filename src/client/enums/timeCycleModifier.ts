@@ -1,5 +1,5 @@
 // https://wiki.rage.mp/index.php?title=Timecycle_Modifiers
-enum TimeCycleModifier {
+export enum TimeCycleModifier {
     AirRaceBoost01,
     AirRaceBoost02,
     AmbientPUSH,
@@ -858,5 +858,3 @@ enum TimeCycleModifier {
     yacht_DLC,
     yell_tunnel_nodirect
 }
-
-export default TimeCycleModifier

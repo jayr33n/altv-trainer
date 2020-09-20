@@ -1,17 +1,20 @@
-import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractSubMenu from "./abstractSubMenu"
-import AbstractMenu from "./abstractMenu"
-import VehicleWheelType from "../enums/vehicleWheelType"
-import VehicleMenu from "./vehicleMenu"
-import Vehicle from "../utils/vehicle"
+import * as alt from "alt-client"
+import * as game from "natives"
+import * as ui from "@durtyfree/altv-nativeui"
+import { VehicleWheelType } from "../enums/vehicleWheelType"
+import { Vehicle } from "../utils/vehicle"
+import { AbstractMenu } from "./abstractMenu"
+import { AbstractSubMenu } from "./abstractSubMenu"
+import { VehicleObject } from "./vehicleMenu"
 
-export default class VehicleWheelsMenu extends AbstractSubMenu {
-    stockWheels: NativeUI.UIMenuItem
+export class VehicleWheelsMenu extends AbstractSubMenu implements VehicleObject {
+    vehicle: alt.Vehicle
+    stockWheels: ui.UIMenuItem
     private wheelsMenus: WheelsMenu[]
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.addItem(this.stockWheels = new NativeUI.UIMenuItem("Stock Wheels"), () => Vehicle.setWheels(VehicleMenu.vehicle, 0, 0))
+        this.addItem(this.stockWheels = new ui.UIMenuItem("Stock Wheels"), () => Vehicle.setWheels(this.vehicle, 0, 0, game.getVehicleClass(this.vehicle.scriptID) == 8 ? true : false))
         this.wheelsMenus = [
             new WheelsMenu(this, "Sport", VehicleWheelType.Sport, 50),
             new WheelsMenu(this, "Muscle", VehicleWheelType.Muscle, 36),
@@ -33,8 +36,9 @@ class WheelsMenu extends AbstractSubMenu {
     constructor(parentMenu: AbstractMenu, title: string, type: VehicleWheelType, num: number) {
         super(parentMenu, title)
         for (let _i = 0; _i < num; _i++) {
-            let item = new NativeUI.UIMenuItem(_i.toString())
-            this.addItem(item, () => Vehicle.setWheels(VehicleMenu.vehicle, type, _i))
+            let item = new ui.UIMenuItem(_i.toString())
+            this.addItem(item, () =>
+                Vehicle.setWheels((this.parentMenu as VehicleWheelsMenu).vehicle, type, _i, game.getVehicleClass((this.parentMenu as VehicleWheelsMenu).vehicle.scriptID) == 8 ? true : false))
         }
     }
 }

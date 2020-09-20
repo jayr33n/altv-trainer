@@ -1,13 +1,15 @@
-import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractSubMenu from "./abstractSubMenu"
-import AbstractMenu from "./abstractMenu"
-import Enum from "../utils/enum"
-import VehicleColor from "../enums/vehicleColor"
-import Vehicle from "../utils/vehicle"
-import VehicleMenu from "./vehicleMenu"
-import Menu from "../utils/menu"
+import * as alt from "alt-client"
+import * as ui from "@durtyfree/altv-nativeui"
+import { VehicleColor } from "../enums/vehicleColor"
+import { Enum } from "../utils/enum"
+import { Menu } from "../utils/menu"
+import { Vehicle } from "../utils/vehicle"
+import { AbstractMenu } from "./abstractMenu"
+import { AbstractSubMenu } from "./abstractSubMenu"
+import { VehicleObject } from "./vehicleMenu"
 
-export default class VehicleColorMenu extends AbstractSubMenu {
+export class VehicleColorMenu extends AbstractSubMenu implements VehicleObject {
+    vehicle: alt.Vehicle
     private primaryColorMenu: ColorMenu
     private secondaryColorMenu: ColorMenu
     private pearlescentColorMenu: ColorMenu
@@ -28,12 +30,13 @@ class ColorMenu extends AbstractSubMenu {
     constructor(parentMenu: AbstractMenu, title: string, type: number) {
         super(parentMenu, title)
         this.type = type
-        this.menuObject.MenuOpen.on(() => Menu.selectItem(this.menuObject.MenuItems.find(item => item.Text.replace(/\s+/g, '') == VehicleColor[Vehicle.getColors(VehicleMenu.vehicle)[this.type]]), NativeUI.BadgeStyle.Car))
+        this.menuObject.MenuOpen.on(() => Menu.selectItem(this.menuObject.MenuItems.find(item =>
+            item.Text.replace(/\s+/g, '') == VehicleColor[Vehicle.getColors((this.parentMenu as VehicleColorMenu).vehicle)[this.type]]), ui.BadgeStyle.Car))
         Enum.getValues(VehicleColor).forEach(color => {
-            let item = new NativeUI.UIMenuItem(VehicleColor[+color].replace(/([A-Z])/g, ' $1').trim())
+            let item = new ui.UIMenuItem(VehicleColor[+color].replace(/([A-Z])/g, ' $1').trim())
             this.addItem(item, () => {
-                Vehicle.setColor(VehicleMenu.vehicle, this.type, +color)
-                Menu.selectItem(item, NativeUI.BadgeStyle.Car)
+                Vehicle.setColor((this.parentMenu as VehicleColorMenu).vehicle, this.type, +color)
+                Menu.selectItem(item, ui.BadgeStyle.Car)
             })
         })
     }

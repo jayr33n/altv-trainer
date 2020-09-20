@@ -1,3 +1,3 @@
-import callbacks from "./modules/callbacks"
+import { callbacks } from "./modules/callbacks";
 
 callbacks.init()

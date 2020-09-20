@@ -122,6 +122,7 @@ dist
 # Ignore all local history of files
 .history
 
+.npmrc
 out/
 src/client/include/*
 !.gitkeep

@@ -1,26 +1,28 @@
-import * as NativeUI from "../include/NativeUI/NativeUi"
-import menuPool from "../modules/menuPool"
+import * as ui from "@durtyfree/altv-nativeui"
+import { AbstractMenuPool } from "../modules/menuPool"
 
-export default abstract class AbstractMenu {
-    menuObject: NativeUI.Menu
+export abstract class AbstractMenu {
+    pool: AbstractMenuPool
+    menuObject: ui.Menu
 
-    protected constructor(title: string) {
-        this.menuObject = new NativeUI.Menu("", title.toUpperCase(), new NativeUI.Point(50, -57))
+    protected constructor(pool: AbstractMenuPool, title: string) {
+        this.pool = pool
+        this.menuObject = new ui.Menu("", title.toUpperCase(), new ui.Point(50, -57))
         this.menuObject.SetNoBannerType()
         this.menuObject.DisableInstructionalButtons(true)
-        this.menuObject.ItemSelect.on((item: NativeUI.UIMenuItem) => item.Data())
-        this.menuObject.CheckboxChange.on((item: NativeUI.UIMenuCheckboxItem, state: boolean) => item.Data(state))
-        this.menuObject.DynamicListChange.on((item: NativeUI.UIMenuDynamicListItem, index: number, direction: NativeUI.ChangeDirection) => item.Data(index, direction))
-        this.menuObject.ListChange.on((item: NativeUI.UIMenuListItem, index: number) => item.Data(index))
-        menuPool.add(this.menuObject)
+        this.menuObject.ItemSelect.on((item: ui.UIMenuItem) => item.Data())
+        this.menuObject.CheckboxChange.on((item: ui.UIMenuCheckboxItem, state: boolean) => item.Data(state))
+        this.menuObject.DynamicListChange.on((item: ui.UIMenuDynamicListItem, index: number, direction: ui.ChangeDirection) => item.Data(index, direction))
+        this.menuObject.ListChange.on((item: ui.UIMenuListItem, index: number) => item.Data(index))
+        this.pool.add(this.menuObject)
     }
 
-    addItem<T extends NativeUI.UIMenuItem>(item: T, handler = () => { }) {
+    addItem<T extends ui.UIMenuItem>(item: T, handler = () => { }) {
         item.Data = handler
         this.menuObject.AddItem(item)
     }
 
-    addUserInputItem<T extends NativeUI.UIMenuItem>(item: T, handler: () => void) {
+    addUserInputItem<T extends ui.UIMenuItem>(item: T, handler: () => void) {
         item.RightLabel = "[ ... ]"
         this.addItem(item, handler)
     }

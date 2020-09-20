@@ -1,31 +1,31 @@
 import * as game from "natives"
-import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractMenu from "./abstractMenu"
-import AbstractSubMenu from "./abstractSubMenu"
-import Enum from "../utils/enum"
-import Game from "../utils/game"
-import Weather from "../enums/weather"
-import Menu from "../utils/menu"
-import CloudHat from "../enums/cloudHat"
-import TimeCycleModifier from "../enums/timeCycleModifier"
-import tick from "../modules/tick"
+import * as ui from "@durtyfree/altv-nativeui"
+import { Menu } from "../utils/menu"
+import { CloudHat } from "../enums/cloudHat"
+import { TimeCycleModifier } from "../enums/timeCycleModifier"
+import { Weather } from "../enums/weather"
+import { tick } from "../modules/tick"
+import { Enum } from "../utils/enum"
+import { Game } from "../utils/game"
+import { AbstractMenu } from "./abstractMenu"
+import { AbstractSubMenu } from "./abstractSubMenu"
 
-export default class WorldMenu extends AbstractSubMenu {
-    private gameClockItem: NativeUI.UIMenuListItem
+export class WorldMenu extends AbstractSubMenu {
+    private gameClockItem: ui.UIMenuListItem
     private weatherMenu: WeatherMenu
     private cloudHatMenu: CloudHatMenu
     private timeCycleMenu: TimeCycleMenu
-    private artificialLights: NativeUI.UIMenuCheckboxItem
-    private freezeTime: NativeUI.UIMenuCheckboxItem
+    private artificialLights: ui.UIMenuCheckboxItem
+    private freezeTime: ui.UIMenuCheckboxItem
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
         this.weatherMenu = new WeatherMenu(this, "World Weather")
         this.cloudHatMenu = new CloudHatMenu(this, "World Cloud Hat")
         this.timeCycleMenu = new TimeCycleMenu(this, "World Time Cycle")
-        this.addItem(this.gameClockItem = new NativeUI.UIMenuListItem("Game Clock Hours", undefined, new NativeUI.ItemsCollection([...Array(24).keys()])), (index?: number) => Game.setTime(index, 0, 0))
-        this.addItem(this.artificialLights = new NativeUI.UIMenuCheckboxItem("Toggle Artificial Lights", true), (state?: boolean) => Game.setArtificialLightsState(!state))
-        this.addItem(this.freezeTime = new NativeUI.UIMenuCheckboxItem("Freeze Time"), (state?: boolean) => {
+        this.addItem(this.gameClockItem = new ui.UIMenuListItem("Game Clock Hours", undefined, new ui.ItemsCollection([...Array(24).keys()])), (index?: number) => Game.setTime(index, 0, 0))
+        this.addItem(this.artificialLights = new ui.UIMenuCheckboxItem("Toggle Artificial Lights", true), (state?: boolean) => Game.setArtificialLightsState(!state))
+        this.addItem(this.freezeTime = new ui.UIMenuCheckboxItem("Freeze Time"), (state?: boolean) => {
             if (state) {
                 let time = [game.getClockHours(), game.getClockMinutes(), game.getClockSeconds()]
                 tick.register("world:freezeTime", () => Game.setTime(time[0], time[1], time[2]), 500)
@@ -36,7 +36,7 @@ export default class WorldMenu extends AbstractSubMenu {
                 this.freezeTime.Description = ""
             }
         })
-        this.freezeTime.LeftBadge = NativeUI.BadgeStyle.Alert
+        this.freezeTime.LeftBadge = ui.BadgeStyle.Alert
     }
 }
 
@@ -44,23 +44,23 @@ class WeatherMenu extends AbstractSubMenu {
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
         Enum.getValues(Weather).forEach(weather => {
-            let item = new NativeUI.UIMenuItem(Weather[+weather].toUpperCase())
+            let item = new ui.UIMenuItem(Weather[+weather].toUpperCase())
             this.addItem(item, () => {
                 Game.setWeather(+weather)
-                Menu.selectItem(item, NativeUI.BadgeStyle.Tick)
+                Menu.selectItem(item, ui.BadgeStyle.Tick)
             })
         })
-        this.menuObject.MenuOpen.on(() => Menu.selectItem(this.menuObject.MenuItems[Game.getCurrentWeather()], NativeUI.BadgeStyle.Tick))
+        this.menuObject.MenuOpen.on(() => Menu.selectItem(this.menuObject.MenuItems[Game.getCurrentWeather()], ui.BadgeStyle.Tick))
     }
 }
 
 class CloudHatMenu extends AbstractSubMenu {
-    private opacityItem: NativeUI.UIMenuListItem
+    private opacityItem: ui.UIMenuListItem
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.addItem(this.opacityItem = new NativeUI.UIMenuListItem("Opacity", undefined, new NativeUI.ItemsCollection([...Array(11).keys()])), (index?: number) => Game.setCloudHatOpacity(index / 10))
-        Enum.getStringKeys(CloudHat).forEach(cloudHat => this.addItem(new NativeUI.UIMenuItem(cloudHat.toUpperCase())/*, () => Game.setCloudHat(Enum.getStringValues(CloudHat).find(value => value == CloudHat[cloudHat]))*/))
+        this.addItem(this.opacityItem = new ui.UIMenuListItem("Opacity", undefined, new ui.ItemsCollection([...Array(11).keys()])), (index?: number) => Game.setCloudHatOpacity(index / 10))
+        Enum.getStringKeys(CloudHat).forEach(cloudHat => this.addItem(new ui.UIMenuItem(cloudHat.toUpperCase())/*, () => Game.setCloudHat(Enum.getStringValues(CloudHat).find(value => value == CloudHat[cloudHat]))*/))
         this.menuObject.MenuOpen.on(() => {
             let opacityIndex = (Math.round((game.getCloudHatOpacity() + Number.EPSILON) * 10) / 10)
             this.opacityItem.Index = opacityIndex * Math.ceil(Math.log10(opacityIndex + 1)) * 10
@@ -69,13 +69,13 @@ class CloudHatMenu extends AbstractSubMenu {
 }
 
 class TimeCycleMenu extends AbstractSubMenu {
-    private customItem: NativeUI.UIMenuItem
-    private clearItem: NativeUI.UIMenuItem
+    private customItem: ui.UIMenuItem
+    private clearItem: ui.UIMenuItem
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.addUserInputItem(this.customItem = new NativeUI.UIMenuItem("Custom Timecycle"), async () => game.setTimecycleModifier(await Game.getUserInput()))
-        this.addItem(this.clearItem = new NativeUI.UIMenuItem("Clear Timecycle"), () => game.clearTimecycleModifier())
-        Enum.getKeys(TimeCycleModifier).forEach(modifier => this.addItem(new NativeUI.UIMenuItem(modifier.toUpperCase()), () => game.setTimecycleModifier(modifier)))
+        this.addUserInputItem(this.customItem = new ui.UIMenuItem("Custom Timecycle"), async () => game.setTimecycleModifier(await Game.getUserInput()))
+        this.addItem(this.clearItem = new ui.UIMenuItem("Clear Timecycle"), () => game.clearTimecycleModifier())
+        Enum.getKeys(TimeCycleModifier).forEach(modifier => this.addItem(new ui.UIMenuItem(modifier.toUpperCase()), () => game.setTimecycleModifier(modifier)))
     }
 }

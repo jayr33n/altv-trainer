@@ -1,5 +1,5 @@
 // https://wiki.rage.mp/index.php?title=Weather
-enum Weather {
+export enum Weather {
     ExtraSunny,
     Clear,
     Clouds,
@@ -16,5 +16,3 @@ enum Weather {
     Xmas,
     Halloween
 }
-
-export default Weather

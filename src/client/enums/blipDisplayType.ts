@@ -1,5 +1,5 @@
 // https://wiki.rage.mp/index.php?title=Blip::setDisplay
-enum BlipDisplayType {
+export enum BlipDisplayType {
     Hidden,
     BothSelectable = 2,
     MainMapSelectable,
@@ -7,5 +7,3 @@ enum BlipDisplayType {
     Minimap,
     Both = 8
 }
-
-export default BlipDisplayType

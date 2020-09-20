@@ -1,21 +1,22 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractSubMenu from "./abstractSubMenu"
-import VehicleMod from "../enums/vehicleMod"
-import Enum from "../utils/enum"
-import Vehicle from "../utils/vehicle"
-import AbstractMenu from "./abstractMenu"
-import VehicleColorMenu from "./vehicleColorMenu"
-import VehicleWheelsMenu from "./vehicleWheelsMenu"
-import VehicleMenu from "./vehicleMenu"
-import Menu from "../utils/menu"
+import * as ui from "@durtyfree/altv-nativeui"
+import { Vehicle } from "../utils/vehicle"
+import { Menu } from "../utils/menu"
+import { VehicleMod } from "../enums/vehicleMod"
+import { Enum } from "../utils/enum"
+import { AbstractMenu } from "./abstractMenu"
+import { AbstractSubMenu } from "./abstractSubMenu"
+import { VehicleColorMenu } from "./vehicleColorMenu"
+import { VehicleObject } from "./vehicleMenu"
+import { VehicleWheelsMenu } from "./vehicleWheelsMenu"
 
-export default class VehicleCustomizationMenu extends AbstractSubMenu {
+export class VehicleCustomizationMenu extends AbstractSubMenu implements VehicleObject {
+    vehicle: alt.Vehicle
+    vehicleColorMenu: VehicleColorMenu
+    vehicleWheelsMenu: VehicleWheelsMenu
     private modMenus: ModMenu[]
     private bennysMenu: BennysMenu
-    private vehicleColorMenu: VehicleColorMenu
-    private vehicleWheelsMenu: VehicleWheelsMenu
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
@@ -43,8 +44,8 @@ export default class VehicleCustomizationMenu extends AbstractSubMenu {
             new ModMenu(this, "Transmission", VehicleMod.Transmission),
         ].concat(this.bennysMenu.modMenus)
         this.menuObject.MenuOpen.on(() => {
-            game.setVehicleModKit(VehicleMenu.vehicle.scriptID, 0)
-            Enum.getValues(VehicleMod).forEach(mod => this.modMenus.find(menu => menu.mod == +mod)?.init(VehicleMenu.vehicle))
+            game.setVehicleModKit(this.vehicle.scriptID, 0)
+            Enum.getValues(VehicleMod).forEach(mod => this.modMenus.find(menu => menu.mod == +mod)?.init(this.vehicle))
         })
     }
 }
@@ -97,13 +98,13 @@ class ModMenu extends AbstractSubMenu {
             Menu.lockMenuItem(this.menuItem)
         else {
             for (let _i = 0; _i <= this.numMods; _i++) {
-                let item = new NativeUI.UIMenuItem(this.menuItem.Text + " #" + _i)
+                let item = new ui.UIMenuItem(this.menuItem.Text + " #" + _i)
                 this.addItem(item, () => {
                     Vehicle.setMod(vehicle, this.mod, _i)
-                    Menu.selectItem(item, NativeUI.BadgeStyle.Car)
+                    Menu.selectItem(item, ui.BadgeStyle.Car)
                 })
             }
-            Menu.selectItem(this.menuObject.MenuItems[game.getVehicleMod(vehicle.scriptID, this.mod) + 1], NativeUI.BadgeStyle.Car)
+            Menu.selectItem(this.menuObject.MenuItems[game.getVehicleMod(vehicle.scriptID, this.mod) + 1], ui.BadgeStyle.Car)
         }
     }
 }

@@ -1,17 +1,17 @@
 import * as alt from "alt-client"
-import * as NativeUI from "../include/NativeUI/NativeUi"
-import AbstractSubMenu from "./abstractSubMenu"
-import AbstractMenu from "./abstractMenu"
-import Game from "../utils/game"
+import * as ui from "@durtyfree/altv-nativeui"
+import { Game } from "../utils/game"
+import { AbstractMenu } from "./abstractMenu"
+import { AbstractSubMenu } from "./abstractSubMenu"
 
-export default class OnlineMenu extends AbstractSubMenu {
+export class OnlineMenu extends AbstractSubMenu {
     static spectatingPlayer: alt.Player
-    private reloadPlayerListItem: NativeUI.UIMenuItem
+    private reloadPlayerListItem: ui.UIMenuItem
 
     constructor(parentMenu: AbstractMenu, title: string) {
         super(parentMenu, title)
-        this.addItem(this.reloadPlayerListItem = new NativeUI.UIMenuItem("Reload Player List"), () => this.reloadPlayerList())
-        this.reloadPlayerListItem.LeftBadge = NativeUI.BadgeStyle.Alert
+        this.addItem(this.reloadPlayerListItem = new ui.UIMenuItem("Reload Player List"), () => this.reloadPlayerList())
+        this.reloadPlayerListItem.LeftBadge = ui.BadgeStyle.Alert
         this.menuObject.MenuOpen.on(() => this.reloadPlayerList())
     }
 
@@ -24,20 +24,20 @@ export default class OnlineMenu extends AbstractSubMenu {
 }
 
 class OnlinePlayerMenu extends AbstractSubMenu {
-    private hwIdHashItem: NativeUI.UIMenuItem
-    private hwIdExHashItem: NativeUI.UIMenuItem
-    private socialIdItem: NativeUI.UIMenuItem
-    private teleportToItem: NativeUI.UIMenuItem
-    private teleportHereItem: NativeUI.UIMenuItem
+    private hwIdHashItem: ui.UIMenuItem
+    private hwIdExHashItem: ui.UIMenuItem
+    private socialIdItem: ui.UIMenuItem
+    private teleportToItem: ui.UIMenuItem
+    private teleportHereItem: ui.UIMenuItem
 
 
     constructor(parentMenu: AbstractMenu, title: string, player: alt.Player) {
         super(parentMenu, title)
-        this.addItem(this.hwIdHashItem = new NativeUI.UIMenuItem("HWID"))
-        this.addItem(this.hwIdExHashItem = new NativeUI.UIMenuItem("HWIDEX"))
-        this.addItem(this.socialIdItem = new NativeUI.UIMenuItem("SOCIALID"))
-        this.addItem(this.teleportToItem = new NativeUI.UIMenuItem("Teleport To Player"), () => Game.teleportPlayertoEntity(alt.Player.local, player))
-        this.addItem(this.teleportHereItem = new NativeUI.UIMenuItem("Teleport Here"), () => Game.teleportPlayertoEntity(player, alt.Player.local))
+        this.addItem(this.hwIdHashItem = new ui.UIMenuItem("HWID"))
+        this.addItem(this.hwIdExHashItem = new ui.UIMenuItem("HWIDEX"))
+        this.addItem(this.socialIdItem = new ui.UIMenuItem("SOCIALID"))
+        this.addItem(this.teleportToItem = new ui.UIMenuItem("Teleport To Player"), () => Game.teleportPlayertoEntity(alt.Player.local, player))
+        this.addItem(this.teleportHereItem = new ui.UIMenuItem("Teleport Here"), () => Game.teleportPlayertoEntity(player, alt.Player.local))
         this.getIdentifiers(player)
     }
 

@@ -1,5 +1,5 @@
 // https://wiki.rage.mp/index.php?title=HUD_Components
-enum HudComponent {
+export enum HudComponent {
     Hud,
     HudWantedStars,
     HudWeaponIcon,
@@ -25,5 +25,3 @@ enum HudComponent {
     MaxHudWeapons,
     MaxScriptedHudComponents = 141
 }
-
-export default HudComponent

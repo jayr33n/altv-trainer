@@ -30,5 +30,4 @@ class Tick {
     }
 }
 
-const tick = new Tick()
-export default tick
+export const tick = new Tick()

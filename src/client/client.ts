@@ -1,5 +1,5 @@
-import network from "./modules/network"
-import menuPool from "./modules/menuPool"
+import { menuPool } from "./modules/menuPool"
+import { network } from "./modules/network"
 
 network.init()
 menuPool.init()

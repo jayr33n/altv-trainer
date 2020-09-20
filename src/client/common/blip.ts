@@ -1,9 +1,9 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import BlipDisplayType from "../enums/blipDisplayType"
+import { BlipDisplayType } from "../enums/blipDisplayType"
 
 // https://wiki.gtanet.work/index.php?title=Blips
-export default class Blip {
+export class Blip {
     private _name: string
     private _sprite: number
     private _scale: number

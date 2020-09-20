@@ -1,13 +1,13 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import network from "../modules/network"
-import PedHash from "../enums/pedHash"
-import WeaponHash from "../enums/weaponHash"
-import Entity from "./entity"
-import AnimationFlag from "../enums/animationFlag"
-import Game from "./game"
+import { AnimationFlag } from "../enums/animationFlag"
+import { PedHash } from "../enums/pedHash"
+import { WeaponHash } from "../enums/weaponHash"
+import { network } from "../modules/network"
+import { Entity } from "./entity"
+import { Game } from "./game"
 
-export default class Player extends Entity {
+export class Player extends Entity {
     static async respawn() {
         await network.callback("player:respawn")
     }

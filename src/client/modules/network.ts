@@ -1,6 +1,6 @@
 import * as alt from "alt-client"
 import * as game from "natives"
-import VehicleSeat from "../enums/vehicleSeat"
+import { VehicleSeat } from "../enums/vehicleSeat"
 
 class Network {
     private callbackID = 0
@@ -24,5 +24,4 @@ class Network {
     }
 }
 
-const network = new Network()
-export default network
+export const network = new Network()
