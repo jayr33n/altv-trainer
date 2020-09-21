@@ -1,4 +1,4 @@
 language: node_js
 
 before_install:
-  - echo //npm.pkg.github.com/:_authToken=\${GITHUB_TOKEN} @durtyfree:registry=https://npm.pkg.github.com > .npmrc
+  - (echo //npm.pkg.github.com/:_authToken=\${GITHUB_TOKEN} && echo @durtyfree:registry=https://npm.pkg.github.com) > .npmrc
