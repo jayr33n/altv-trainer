@@ -1,6 +1,7 @@
 import * as alt from "alt-client"
 import * as game from "natives"
 import * as ui from "@durtyfree/altv-nativeui"
+import * as json from "../../../package.json"
 import { Font } from "../enums/font"
 import { Player } from "../utils/player"
 import { Text2D } from "../common/text2D"
@@ -80,9 +81,9 @@ export class MiscMenu extends AbstractSubMenu {
             state ? tick.register("misc:hideHud", () => Enum.getValues(HudComponent).forEach(component => game.hideHudComponentThisFrame(+component)), 0) : tick.clear("misc:hideHud")
             game.displayRadar(!state)
         })
-        this.addItem(this.creditsItem = new ui.UIMenuItem("About\\Credits", "Trainer made by ~b~Jayreen~s~ #1395 for ~b~alt:V~s~."))
+        this.addItem(this.creditsItem = new ui.UIMenuItem("About\\Credits", `Trainer made by ~b~${json.author}~s~ #1395 for ~b~alt:V~s~.`))
         this.creditsItem.LeftBadge = ui.BadgeStyle.Heart
-        this.creditsItem.RightLabel = "~h~ 1.0.2"
+        this.creditsItem.RightLabel = `~h~ ${json.version}`
         alt.on("keyup", (key: number) => {
             if (key == Key.F7 && this.teleportToMarkerItem.Checked) {
                 let handle = game.getFirstBlipInfoId(8)
