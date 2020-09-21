@@ -1,4 +1,5 @@
 # altv-trainer
+[![Build Status](https://travis-ci.org/Jayreen58/altv-trainer.svg?branch=master)](https://travis-ci.org/Jayreen58/altv-trainer)  
 **altv-trainer** is a general-purpose menu built on **[NativeUI](https://github.com/DurtyFree/alt-V-NativeUI)** designed for **[alt:V](https://altv.mp/#/)**. It includes many options to help you debug your scripts or just mess around with your friends. It is **not** supposed to be an admin menu. `(for now)`  
 ## Installing
 **altv-trainer** was developed and tested on `release build #1286`.
